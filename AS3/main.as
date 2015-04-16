@@ -10,6 +10,9 @@
 		
 		var movementDelay = new Timer(500, 4);
 		
+		// East = 0, South = 1, West = 2, North = 3
+		var playerDirection:int = 0;
+		
 		var checkList;
 		var character;
 		var mainMenu;
@@ -37,6 +40,8 @@
 			
 			character = new yourDude(480, 130, this);
 			addChild(character);
+			character.gotoAndStop(1);
+			playerDirection = 0;
 			
 			addChild(checkList);
 			
@@ -50,6 +55,8 @@
 			
 			character = new yourDude(480, 130, this);
 			addChild(character);
+			character.gotoAndStop(1);
+			playerDirection = 0;
 			
 			addChild(checkList);
 			
@@ -65,24 +72,39 @@
 		public function moveCharacterEasy(e:KeyboardEvent){
 			var speed = 113;
 			
-			//Player moves left
-			if(e.keyCode == 37 && character.x > 480) {
-				character.setX(character.getX() - speed);
+			//Player turns left
+			if(e.keyCode == 37) {
+				playerDirection = (playerDirection - 1)%4;
+				if (playerDirection < 0) {
+					playerDirection += 4;
+				}
+				character.gotoAndStop(playerDirection + 1);
 			}
 			
-			//Player moves right
-			else if(e.keyCode == 39 && character.x < 1271) {
-				character.setX(character.getX() + speed);
+			//Player turns right
+			else if(e.keyCode == 39) {
+				playerDirection = (playerDirection + 1)%4;
+				if (playerDirection < 0) {
+					playerDirection += 4;
+				}
+				character.gotoAndStop(playerDirection + 1);
 			}
 			
-			//player moves down
-			else if(e.keyCode == 40 && character.y < 921) {
-				character.setY(character.getY() + speed);
-			}
-			
-			//player moves up
-			else if(e.keyCode == 38 && character.y > 130) {
-				character.setY(character.getY() - speed);
+			//player moves in direction
+			else if(e.keyCode == 38) {
+				if (playerDirection == 0 && character.x < 1271) {
+					//move east
+					character.setX(character.getX() + speed);
+				} else if (playerDirection == 1 && character.y < 921) {
+					//move south
+					character.setY(character.getY() + speed);
+				} else if (playerDirection == 2 && character.x > 480) {
+					//move west
+					character.setX(character.getX() - speed);
+				} else if (playerDirection == 3  && character.y > 130) {
+					//move north
+					character.setY(character.getY() - speed);
+				}
 			}
 		}
 		
@@ -116,20 +138,38 @@
 		}
 		
 		public function executeIntermediateMoves(e:TimerEvent=null){
-			if(intermediateMoves[0] == 37 && character.x > 480) {
-				character.setX(character.getX() - 113);
+			var speed = 113;
+			
+			if(intermediateMoves[0] == 37) {
+				playerDirection = (playerDirection - 1)%4;
+				if (playerDirection < 0) {
+					playerDirection += 4;
+				}
+				character.gotoAndStop(playerDirection + 1);
 				intermediateMoves.shift();
 			}
-			else if (intermediateMoves[0] == 39 && character.x <1271) {
-				character.setX(character.getX() + 113);
+			else if (intermediateMoves[0] == 39) {
+				playerDirection = (playerDirection + 1)%4;
+				if (playerDirection < 0) {
+					playerDirection += 4;
+				}
+				character.gotoAndStop(playerDirection + 1);
 				intermediateMoves.shift();
 			}
-			else if (intermediateMoves[0] == 40 && character.y < 921) {
-				character.setY(character.getY() + 113);
-				intermediateMoves.shift();
-			} 
-			else if (intermediateMoves[0] == 38 && character.y > 130) {
-				character.setY(character.getY() - 113);
+			else if (intermediateMoves[0] == 38) {
+				if (playerDirection == 0 && character.x < 1271) {
+					//move east
+					character.setX(character.getX() + speed);
+				} else if (playerDirection == 1 && character.y < 921) {
+					//move south
+					character.setY(character.getY() + speed);
+				} else if (playerDirection == 2 && character.x > 480) {
+					//move west
+					character.setX(character.getX() - speed);
+				} else if (playerDirection == 3  && character.y > 130) {
+					//move north
+					character.setY(character.getY() - speed);
+				}
 				intermediateMoves.shift();
 			}
 		}

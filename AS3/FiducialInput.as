@@ -11,7 +11,11 @@
 	
 	public class FiducialInput implements ITuioListener {
 
+		private var tuio:TuioClient;
+		
 		public function FiducialInput() {
+			this.tuio = new TuioClient(new LCConnector());
+			this.tuio.addListener(this);
 		}
 		
 		/**
@@ -19,6 +23,8 @@
 		 * @param	tuioObject The values of the received /tuio/**Dobj.
 		 */
 		public function addTuioObject(tuioObject:TuioObject):void {
+			trace(tuioObject.toString()); // TODO: remove debug output
+			// find number of the fiducial in tuioObject.classID
 		}
 		
 		/**

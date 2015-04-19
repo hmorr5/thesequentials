@@ -19,8 +19,11 @@
 		var gameGrid;
 		var intermediateMoves:Array = [];
 		var goButton;
+		var input:FiducialInput;
 
 		public function main() {
+			input = new FiducialInput();
+			
 			mainMenu = new menu(this);
 			addChild(mainMenu);
 			

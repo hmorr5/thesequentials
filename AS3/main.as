@@ -1,6 +1,5 @@
 ﻿package {
 	
-	import com.frigidfish.Grid;
 	import com.greensock.TweenMax;
 	import flash.display.*;
 	import flash.events.*;
@@ -12,7 +11,7 @@
 		//Delays movement of bug on intermediate/advanced levels
 		var movementDelay = new Timer(1000, 4);
 		
-		// East = 0, South = 1, West = 2, North = 3
+		// 0: East, 1: South, 2: West, 3: North
 		var playerDirection:int = 0;
 		
 		//Arrays
@@ -24,9 +23,9 @@
 		
 		//These are all vars for symbols (images)
 		var checkList;
-		var character;
-		var mainMenu;
-		var gameGrid;
+		var character:yourDude;
+		var mainMenu:menu;
+		var gameGrid:Grid;
 		var goButton;
 		var goButtonGreen;
 		var moveList;
@@ -70,6 +69,8 @@
 			gameGrid.x = 400;
 			addChild(gameGrid);
 			
+			trace("gameGrid deltas: " + gameGrid.dx + ", " + gameGrid.dy);
+			
 			character = new yourDude(480, 130, this);
 			addChild(character);
 			character.gotoAndStop(1);
@@ -107,10 +108,7 @@
 			
 			//Player turns left
 			if(e.keyCode == 37) {
-				playerDirection = (playerDirection - 1)%4;
-				if (playerDirection < 0) {
-					playerDirection += 4;
-				}
+				playerDirection = (playerDirection + 3) % 4;
 				TweenMax.to(character, 1, {shortRotation:{rotation:angle -= 90}});
 				if (angle <= -360) {
 					angle = 0;
@@ -119,10 +117,7 @@
 			
 			//Player turns right
 			else if(e.keyCode == 39) {
-				playerDirection = (playerDirection + 1)%4;
-				if (playerDirection < 0) {
-					playerDirection += 4;
-				}
+				playerDirection = (playerDirection + 1) % 4;
 				trace("angle: " + angle);
 				TweenMax.to(character, 1, {shortRotation:{rotation:angle += 90}});
 				if (angle >= 360) {
@@ -132,6 +127,8 @@
 			
 			//player moves in direction
 			else if(e.keyCode == 38) {
+				character.move(playerDirection);
+				/*
 				if (playerDirection == 0 && character.x < 1271) {
 					//move east
 					character.setX(character.getX() + speed);
@@ -145,6 +142,7 @@
 					//move north
 					character.setY(character.getY() - speed);
 				}
+				*/
 			}
 		}
 		
@@ -209,10 +207,7 @@
 			var speed = 113;
 			
 			if(intermediateMoves[0] == 37) {
-				playerDirection = (playerDirection - 1)%4;
-				if (playerDirection < 0) {
-					playerDirection += 4;
-				}
+				playerDirection = (playerDirection + 3) % 4;
 				TweenMax.to(character, 1, {shortRotation:{rotation:angle -= 90}});
 				if (angle <= -360) {
 					angle = 0;
@@ -220,10 +215,7 @@
 				intermediateMoves.shift();
 			}
 			else if (intermediateMoves[0] == 39) {
-				playerDirection = (playerDirection + 1)%4;
-				if (playerDirection < 0) {
-					playerDirection += 4;
-				}
+				playerDirection = (playerDirection + 1) % 4;
 				TweenMax.to(character, 1, {shortRotation:{rotation:angle += 90}});
 				if (angle >= 360) {
 					angle = 0;
@@ -231,19 +223,7 @@
 				intermediateMoves.shift();
 			}
 			else if (intermediateMoves[0] == 38) {
-				if (playerDirection == 0 && character.x < 1271) {
-					//move east
-					character.setX(character.getX() + speed);
-				} else if (playerDirection == 1 && character.y < 921) {
-					//move south
-					character.setY(character.getY() + speed);
-				} else if (playerDirection == 2 && character.x > 480) {
-					//move west
-					character.setX(character.getX() - speed);
-				} else if (playerDirection == 3  && character.y > 130) {
-					//move north
-					character.setY(character.getY() - speed);
-				}
+				character.move(playerDirection);
 				intermediateMoves.shift();
 			}
 		}

@@ -1,6 +1,7 @@
 ﻿package {
 	
 	import com.frigidfish.Grid;
+	import com.greensock.TweenMax;
 	import flash.display.*;
 	import flash.events.*;
 	import flash.text.*;
@@ -9,7 +10,7 @@
 	public class main extends MovieClip{
 		
 		//Delays movement of bug on intermediate/advanced levels
-		var movementDelay = new Timer(500, 4);
+		var movementDelay = new Timer(1000, 4);
 		
 		// East = 0, South = 1, West = 2, North = 3
 		var playerDirection:int = 0;
@@ -29,6 +30,8 @@
 		var forwardArrow;
 		var turnRight;
 		var turnLeft;
+		
+		var angle:int = 0;
 
 		var input:FiducialInput;
 		public function main() {
@@ -105,7 +108,10 @@
 				if (playerDirection < 0) {
 					playerDirection += 4;
 				}
-				character.gotoAndStop(playerDirection + 1);
+				TweenMax.to(character, 1, {shortRotation:{rotation:angle -= 90}});
+				if (angle <= -360) {
+					angle = 0;
+				}
 			}
 			
 			//Player turns right
@@ -114,7 +120,11 @@
 				if (playerDirection < 0) {
 					playerDirection += 4;
 				}
-				character.gotoAndStop(playerDirection + 1);
+				trace("angle: " + angle);
+				TweenMax.to(character, 1, {shortRotation:{rotation:angle += 90}});
+				if (angle >= 360) {
+					angle = 0;
+				}
 			}
 			
 			//player moves in direction
@@ -200,7 +210,10 @@
 				if (playerDirection < 0) {
 					playerDirection += 4;
 				}
-				character.gotoAndStop(playerDirection + 1);
+				TweenMax.to(character, 1, {shortRotation:{rotation:angle -= 90}});
+				if (angle <= -360) {
+					angle = 0;
+				}
 				intermediateMoves.shift();
 			}
 			else if (intermediateMoves[0] == 39) {
@@ -208,7 +221,10 @@
 				if (playerDirection < 0) {
 					playerDirection += 4;
 				}
-				character.gotoAndStop(playerDirection + 1);
+				TweenMax.to(character, 1, {shortRotation:{rotation:angle += 90}});
+				if (angle >= 360) {
+					angle = 0;
+				}
 				intermediateMoves.shift();
 			}
 			else if (intermediateMoves[0] == 38) {

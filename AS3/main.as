@@ -34,6 +34,7 @@
 		var angle:int = 0;
 
 		var input:FiducialInput;
+		
 		public function main() {
 			input = new FiducialInput();
 			

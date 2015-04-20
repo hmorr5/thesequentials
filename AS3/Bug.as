@@ -5,14 +5,28 @@
 	import flash.utils.*;
 	import flash.text.*;
 	
+	import com.greensock.TweenMax;
+	
 	public class Bug extends MovieClip{
 		
 		var grid:Grid;
-
-		public function Bug(x:uint, y:uint, grid:Grid) {
+		
+		public static const EAST:uint = 0;
+		public static const SOUTH:uint = 1;
+		public static const WEST:uint = 2;
+		public static const NORTH:uint = 3;
+		
+		var direction:int;
+		
+		// for smooth rotation
+		var angle:int;
+		
+		public function Bug(grid:Grid, x:uint = 0, y:uint = 0, direction:uint = EAST) {
 	 	 	this.x = grid.x + (x + 0.5) * grid.dx;
 	 	 	this.y = grid.y + (y + 0.5) * grid.dy;
-			trace(this.x + ", " + this.y);
+
+			this.direction = direction;
+			this.angle = 90 * direction;
 			this.grid = grid;
 		}
 
@@ -22,8 +36,6 @@
 		}
 		
 		public function addY(dy) {
-			trace("grid.y < this.y + dy: " + grid.y + " < " + (this.y + dy));
-			trace("this.y + dy < grid.y + grid.rows * grid.dy: " + (this.y + dy) + " < " + (grid.y + grid.rows * grid.dy));
 			if (grid.y < this.y + dy && this.y + dy < grid.y + grid.rows * grid.dy){
 				this.y += dy;
 			}
@@ -32,7 +44,7 @@
 		/**
 		 * @param direction 0: East, 1: South, 2: West, 3: North
 		 */
-		public function move(direction):void {
+		public function move():void {
 			var dx:int, dy:int;
 			
 			// calculate offsets for x and y
@@ -41,22 +53,26 @@
 			
 			addX(dx * grid.dx);
 			addY(dy * grid.dy);
-			
-			/*
-			if (playerDirection == 0 && character.x < 1271) {
-				//move east
-				character.setX(character.getX() + speed);
-			} else if (playerDirection == 1 && character.y < 921) {
-				//move south
-				character.setY(character.getY() + speed);
-			} else if (playerDirection == 2 && character.x > 480) {
-				//move west
-				character.setX(character.getX() - speed);
-			} else if (playerDirection == 3  && character.y > 130) {
-				//move north
-				character.setY(character.getY() - speed);
-			}
-			*/
+		}
+		
+		public function turnLeft():void {
+			direction = (direction + 3) % 4;
+			TweenMax.to(this, 1, {
+				shortRotation: {
+					rotation: angle -= 90
+				}
+			});
+			angle %= 360;
+		}
+		
+		public function turnRight():void {
+			direction = (direction + 1) % 4;
+			TweenMax.to(this, 1, {
+				shortRotation: {
+					rotation: angle += 90
+				}
+			});
+			angle %= 360;
 		}
 	}
 }

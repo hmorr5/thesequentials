@@ -14,8 +14,8 @@
 			super(displayObject, rows, cols, spacer);
 			
 			if (rows > 0 && cols > 0) {
-				this.dx = this.cells[0].width;
-				this.dy = this.cells[0].height;
+				this.dx = this.cell[0].width;
+				this.dy = this.cell[0].height;
 			}
 		}
 

@@ -43,8 +43,8 @@
 			addChild(mainMenu);
 			
 			checkList = new mockList;
-			checkList.x = 1500;
-			checkList.y = 260;
+			checkList.x = 1350;
+			checkList.y = 50;
 			
 			goButton = new goText;
 			goButton.x = 200;
@@ -65,13 +65,12 @@
 		
 		//Start the game in real time easy mode
 		public function startEasyMode() {
-			var gameGrid:Grid = new Grid(Token,8,8,0);
+			var gameGrid:Grid = new Grid(8,8,0);
 			gameGrid.x = 400;
+			gameGrid.y = 50;
 			addChild(gameGrid);
 			
-			trace("gameGrid deltas: " + gameGrid.dx + ", " + gameGrid.dy);
-			
-			character = new yourDude(480, 130, this);
+			character = new yourDude(0, 0, gameGrid);
 			addChild(character);
 			character.gotoAndStop(1);
 			playerDirection = 0;
@@ -83,11 +82,12 @@
 		
 		//Start the game in intermediate mode.  Bug moves every 4 inputs.
 		public function startIntermediateMode() {
-			var gameGrid:Grid = new Grid(Token,8,8,0);
+			var gameGrid:Grid = new Grid(8,8,0);
 			gameGrid.x = 400;
+			gameGrid.y = 50;
 			addChild(gameGrid);
 			
-			character = new yourDude(480, 130, this);
+			character = new yourDude(0, 0, gameGrid);
 			addChild(character);
 			character.gotoAndStop(1);
 			playerDirection = 0;

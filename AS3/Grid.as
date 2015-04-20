@@ -7,15 +7,15 @@
 		public var dx:uint;
 		public var dy:uint;
 		
-		public function Grid(displayObject:*, rows, cols, spacer) {
+		public function Grid(rows, cols, spacer) {
 			this.dx = 0;
 			this.dy = 0;
 			
-			super(displayObject, rows, cols, spacer);
+			super(Token, rows, cols, spacer);
 			
 			if (rows > 0 && cols > 0) {
-				this.dx = this.cell[0].width;
-				this.dy = this.cell[0].height;
+				this.dx = this.cell[0].width + 1; // +1 for the border
+				this.dy = this.cell[0].height + 1;
 			}
 		}
 

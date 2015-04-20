@@ -7,38 +7,24 @@
 	
 	public class yourDude extends MovieClip{
 		
-		var document:main;
+		var grid:Grid;
 
-		public function yourDude(x, y, d:main) {
-			this.document = d;
-
-	 	 	this.x = x;
-	 	 	this.y = y;
-	 	 }
-		 
-		public function setX(x) {
-			 this.x = x;
-		}
-		 
-		public function getX() {
-			 return this.x;
-		}
-		 
-		public function setY(y) {
-			 this.y = y;
-		}
-		 
-		public function getY() {
-			 return this.y;
+		public function yourDude(x:uint, y:uint, grid:Grid) {
+	 	 	this.x = grid.x + (x + 0.5) * grid.dx;
+	 	 	this.y = grid.y + (y + 0.5) * grid.dy;
+			trace(this.x + ", " + this.y);
+			this.grid = grid;
 		}
 
 		public function addX(dx) {
-			if (document.gameGrid.x < this.x + dx && this.x + dx < document.gameGrid.x + document.gameGrid.cols * document.gameGrid.dx)
+			if (grid.x < this.x + dx && this.x + dx < grid.x + grid.cols * grid.dx)
 				this.x += dx;
 		}
 		
 		public function addY(dy) {
-			if (document.gameGrid.y < this.y + dy && this.y + dy < document.gameGrid.y + document.gameGrid.rows * document.gameGrid.dy){
+			trace("grid.y < this.y + dy: " + grid.y + " < " + (this.y + dy));
+			trace("this.y + dy < grid.y + grid.rows * grid.dy: " + (this.y + dy) + " < " + (grid.y + grid.rows * grid.dy));
+			if (grid.y < this.y + dy && this.y + dy < grid.y + grid.rows * grid.dy){
 				this.y += dy;
 			}
 		}
@@ -53,8 +39,8 @@
 			dx = -1 * ((direction - 1) % 2); // 0: 1, 1: 0, 2: -1, 3: 0
 			dy = -1 * ((direction - 2) % 2); // 0: 0, 1: 1, 2: 0, 3: -1
 			
-			addX(dx * document.gameGrid.dx);
-			addY(dy * document.gameGrid.dy);
+			addX(dx * grid.dx);
+			addY(dy * grid.dy);
 			
 			/*
 			if (playerDirection == 0 && character.x < 1271) {

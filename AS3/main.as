@@ -30,7 +30,10 @@
 		var turnRight;
 		var turnLeft;
 
+		var input:FiducialInput;
 		public function main() {
+			input = new FiducialInput();
+			
 			mainMenu = new menu(this);
 			addChild(mainMenu);
 			

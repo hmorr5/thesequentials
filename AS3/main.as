@@ -19,7 +19,10 @@
 		var intermediateMoves:Array = [];
 		var moveDisplayArray:Array = [];
 		
-		//Mostly graphical vars for symbols
+		//Global var for the smooth rotation
+		var angle:int = 0;
+		
+		//These are all vars for symbols (images)
 		var checkList;
 		var character;
 		var mainMenu;
@@ -31,8 +34,7 @@
 		var turnRight;
 		var turnLeft;
 		
-		var angle:int = 0;
-
+		//var for the fiducial input
 		var input:FiducialInput;
 		
 		public function main() {

@@ -11,7 +11,7 @@
 
 		public function yourDude(xPosition,yPosition, d:main) {
 			this.document = d;
-			 
+
 	 	 	this.x = xPosition;
 	 	 	this.y = yPosition;
 	 	 }
@@ -32,6 +32,12 @@
 			 return this.y;
 		}
 
+		public function addX(deltaX) {
+			this.x += deltaX;
+		}
+		
+		public function addY(deltaY) {
+			this.y += deltaY;
+		}
 	}
-	
 }

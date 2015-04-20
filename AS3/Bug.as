@@ -5,11 +5,11 @@
 	import flash.utils.*;
 	import flash.text.*;
 	
-	public class yourDude extends MovieClip{
+	public class Bug extends MovieClip{
 		
 		var grid:Grid;
 
-		public function yourDude(x:uint, y:uint, grid:Grid) {
+		public function Bug(x:uint, y:uint, grid:Grid) {
 	 	 	this.x = grid.x + (x + 0.5) * grid.dx;
 	 	 	this.y = grid.y + (y + 0.5) * grid.dy;
 			trace(this.x + ", " + this.y);

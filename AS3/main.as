@@ -23,7 +23,7 @@
 		
 		//These are all vars for symbols (images)
 		var checkList;
-		var character:yourDude;
+		var character:Bug;
 		var mainMenu:menu;
 		var gameGrid:Grid;
 		var goButton;
@@ -70,7 +70,7 @@
 			gameGrid.y = 50;
 			addChild(gameGrid);
 			
-			character = new yourDude(0, 0, gameGrid);
+			character = new Bug(0, 0, gameGrid);
 			addChild(character);
 			character.gotoAndStop(1);
 			playerDirection = 0;
@@ -87,7 +87,7 @@
 			gameGrid.y = 50;
 			addChild(gameGrid);
 			
-			character = new yourDude(0, 0, gameGrid);
+			character = new Bug(0, 0, gameGrid);
 			addChild(character);
 			character.gotoAndStop(1);
 			playerDirection = 0;

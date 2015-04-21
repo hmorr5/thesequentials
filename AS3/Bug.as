@@ -68,8 +68,8 @@
 			}
 		}
 		
-		public function undo():void {
-			switch (last) {
+		public function reverse(action:uint):void {
+			switch (action) {
 				case FORWARD:
 					direction = (direction + 2) % 4;
 					forward();
@@ -83,7 +83,10 @@
 					break;
 				default:
 			}
-			
+		}
+		
+		public function undo():void {
+			reverse(last);
 			last = UNDO;
 		}
 		

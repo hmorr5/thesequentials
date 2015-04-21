@@ -12,6 +12,7 @@
 		static const ADVANCED:uint = 2;
 		
 		var mode:uint;
+		var block_KEY_DOWN:Boolean;
 		
 		// maps keycodes to bug movements
 		private var codeMap:Dictionary;
@@ -37,7 +38,6 @@
 		
 		// delays movement of bug in intermediate/advanced mode
 		var movementDelay:Timer;
-		var block_KEY_DOWN:Boolean = false;
 		
 		public function main() {
 			codeMap = new Dictionary();
@@ -69,6 +69,8 @@
 			addChild(gameGrid);
 			addChild(character);
 			addChild(checkList);
+			
+			block_KEY_DOWN = false;
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {   
 				if (!block_KEY_DOWN && e.keyCode in codeMap) {

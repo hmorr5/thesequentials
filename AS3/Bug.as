@@ -25,12 +25,17 @@
 		// for smooth rotation
 		private var angle:int;
 		
+		private var last:uint;
+		
 		public function Bug(grid:Grid, x:uint = 0, y:uint = 0, direction:uint = EAST) {
 	 	 	this.x = grid.x + (x + 0.5) * grid.dx;
 	 	 	this.y = grid.y + (y + 0.5) * grid.dy;
 
 			this.direction = direction;
 			this.angle = 90 * direction;
+			
+			this.last = UNDO;
+			
 			this.grid = grid;
 		}
 
@@ -64,7 +69,22 @@
 		}
 		
 		public function undo():void {
-			// TODO: implement undo for real-time mode
+			switch (last) {
+				case FORWARD:
+					direction = (direction + 2) % 4;
+					forward();
+					direction = (direction + 2) % 4;
+					break;
+				case TURNLEFT:
+					turnRight();
+					break;
+				case TURNRIGHT:
+					turnLeft();
+					break;
+				default:
+			}
+			
+			last = UNDO;
 		}
 		
 		public function forward():void {
@@ -76,6 +96,8 @@
 			
 			addX(dx * grid.dx);
 			addY(dy * grid.dy);
+			
+			last = FORWARD;
 		}
 		
 		public function turnLeft():void {
@@ -86,6 +108,8 @@
 				}
 			});
 			angle %= 360;
+			
+			last = TURNLEFT;
 		}
 		
 		public function turnRight():void {
@@ -96,6 +120,8 @@
 				}
 			});
 			angle %= 360;
+			
+			last = TURNRIGHT;
 		}
 	}
 }

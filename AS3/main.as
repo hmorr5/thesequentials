@@ -7,30 +7,46 @@
 	
 	public class main extends MovieClip{
 		
-		//Delays movement of bug on intermediate/advanced levels
-		var movementDelay = new Timer(1000, 4);
+		static const EASY:uint = 0;
+		static const INTERMEDIATE:uint = 1;
+		static const ADVANCED:uint = 2;
 		
-		//Arrays
-		var intermediateMoves:Array;
-		var moveDisplayArray:Array;
+		var mode:uint;
 		
-		//These are all vars for symbols (images)
+		// maps keycodes to bug movements
+		private var codeMap:Dictionary;
+		
+		// handles the input and calls
+		var fiducial:FiducialInput;
+		
+		// basic display objects
 		var mainMenu:menu;
 		var gameGrid:Grid;
 		var character:Bug;
 		var checkList;
-		var goButton;
-		var goButtonGreen;
+		
+		// intermediate/advanced mode
+		var moves:Array;
+		var moveDisplayArray:Array;
 		var moveList;
 		var forwardArrow;
 		var turnRight;
 		var turnLeft;
+		var goButton;
+		var goButtonGreen;
 		
-		//var for the fiducial input
-		var input:FiducialInput;
+		// delays movement of bug in intermediate/advanced mode
+		var movementDelay:Timer;
+		var block_KEY_DOWN:Boolean = false;
 		
 		public function main() {
-			input = new FiducialInput();
+			codeMap = new Dictionary();
+			codeMap[37] = Bug.TURNLEFT;
+			codeMap[38] = Bug.FORWARD;
+			codeMap[39] = Bug.TURNRIGHT;
+			codeMap[40] = Bug.UNDO;
+			
+			fiducial = new FiducialInput(this);
 			
 			mainMenu = new menu(this);
 			addChild(mainMenu);
@@ -46,13 +62,37 @@
 			checkList.x = 1350;
 			checkList.y = 50;
 			
-			goButton = new goText;
-			goButton.x = 200;
-			goButton.y = 900;
+			mode = EASY;
+		}
+		
+		private function setupEasyMode() {
+			addChild(gameGrid);
+			addChild(character);
+			addChild(checkList);
 			
-			goButtonGreen = new goTextGreen;
-			goButtonGreen.x = 200;
-			goButtonGreen.y = 900;
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {   
+				if (!block_KEY_DOWN && e.keyCode in codeMap) {
+					input(codeMap[e.keyCode]);
+				} else if (block_KEY_DOWN) { trace("blocked " + e.keyCode);
+				} else trace("keycode " + e.keyCode + " is not in the map");
+			});
+			
+			mode = EASY;
+		}
+		
+		private function setupIntermediateMode() {
+			setupAdvancedMode();
+			
+			// TODO: setup ghost
+			
+			mode = INTERMEDIATE;
+		}
+		
+		private function setupAdvancedMode() {
+			setupEasyMode();
+			
+			moves = [];
+			moveDisplayArray = [];
 			
 			moveList = new inputText;
 			moveList.x = 200;
@@ -62,146 +102,122 @@
 			turnRight = new turnRightArrow;
 			turnLeft = new turnLeftArrow;
 			
-			intermediateMoves = [];
-			moveDisplayArray = [];
-		}
-		
-		//Start the game in real time easy mode
-		public function startEasyMode() {
-			addChild(gameGrid);
-			addChild(character);
-			addChild(checkList);
+			goButton = new goText;
+			goButton.x = 200;
+			goButton.y = 900;
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, moveCharacterEasy);
-		}
-		
-		//Start the game in intermediate mode.  Bug moves every 4 inputs.
-		public function startIntermediateMode() {
-			addChild(gameGrid);
-			addChild(character);
-			addChild(checkList);
-			addChild(goButton);
+			goButtonGreen = new goTextGreen;
+			goButtonGreen.x = goButton.x;
+			goButtonGreen.y = goButton.y;
+			
 			addChild(moveList);
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, pushCharacterIntermediate);
-			goButtonGreen.addEventListener(MouseEvent.CLICK, clickGo);
-			movementDelay.addEventListener(TimerEvent.TIMER, executeIntermediateMoves);
-			movementDelay.addEventListener(TimerEvent.TIMER_COMPLETE, resetTimer);
+			updateGoButton();
+			
+			movementDelay = new Timer(1000, 4);
+			
+			goButtonGreen.addEventListener(MouseEvent.CLICK, function(Event:MouseEvent):void {
+				if (moves.length == 4) {
+					movementDelay.start();
+					block_KEY_DOWN = true;
+				}
+			});
+			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
+				character.move(moves[0]);
+				moves.shift();
+			});
+			movementDelay.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
+				movementDelay.reset();
+				block_KEY_DOWN = false;
+				
+				// remove the display arrows
+				for (var i=0; i< moveDisplayArray.length; i++) {
+					removeChild(moveDisplayArray[i]);
+				}
+				
+				moveDisplayArray = [];
+			});
+			
+			mode = ADVANCED;
 		}
 		
-		//Player movement for easy mode; real time movement
-		public function moveCharacterEasy(e:KeyboardEvent){
-			switch(e.keyCode) {
-				case 37:
-					character.turnLeft();
-					break;
-				case 39:
-					character.turnRight();
-					break;
-				case 38:
-					character.move();
-					break;
-				default:
-			}
+		/**
+		 * Start the game in easy mode: bug moves in real time.
+		 */
+		public function startEasyMode() {
+			setupEasyMode();
 		}
 		
-		//Player movement for intermediate mode; movement every 4 inputs
-		//Also shows the display of moves
-		public function pushCharacterIntermediate(e:KeyboardEvent){
-			//outer if statement here so that toggleGoButton does not detect anything other than the 4 keys
-			//detecting anything other than the 3 keycodes will stuff up the order
-			if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
-				if (intermediateMoves.length < 4) {
-					//Player turns left
-					if(e.keyCode == 37) {
-						intermediateMoves.push(37);
-						turnLeft = new turnLeftArrow();
-						turnLeft.y = (300 + 125*(intermediateMoves.length - 1));
-						turnLeft.x = 200;
-						moveDisplayArray.push(turnLeft);
-						addChild(turnLeft);
-					}
-				
-					//Player turns right
-					else if(e.keyCode == 39) {
-						intermediateMoves.push(39);
-						turnRight = new turnRightArrow();
-						turnRight.y = (300 + 125*(intermediateMoves.length - 1));
-						turnRight.x = 200;
-						moveDisplayArray.push(turnRight);
-						addChild(turnRight);
-					}
-				
-					//player moves up
-					else if(e.keyCode == 38) {
-						intermediateMoves.push(38);
-						forwardArrow = new goForwardArrow();
-						forwardArrow.y = (300 + 125*(intermediateMoves.length - 1));
-						forwardArrow.x = 200;
-						moveDisplayArray.push(forwardArrow);
-						addChild(forwardArrow);
+		/**
+		 * Start the game in intermediate mode: bug moves every 4 inputs and has a ghost.
+		 */
+		public function startIntermediateMode() {
+			setupIntermediateMode();
+		}
+		
+		/**
+		 * Start the game in advanced mode: bug moves every 4 inputs.
+		 */
+		public function startAdvancedMode() {
+			setupAdvancedMode();
+		}
+		
+		/**
+		 * Process input depending on the selected mode:
+		 *  - EASY (real time)
+		 *  - INTERMEDIATE / ADVANCED (store in moves array and show symbol)
+		 *  - 
+		 */
+		public function input(input:uint):void {
+			if (mode == EASY) {
+				character.move(input);
+			} else { // intermediate/advanced mode
+				if (input == Bug.UNDO) {
+					moves.splice(-1, 1);
+					var tmp = moveDisplayArray.splice(-1, 1);
+					removeChild(tmp[0]);
+				} else if (moves.length < 4) {
+					moves.push(input);
+					
+					switch (input) {
+						case Bug.FORWARD:
+							forwardArrow = new goForwardArrow();
+							forwardArrow.y = (300 + 125*(moves.length - 1));
+							forwardArrow.x = 200;
+							moveDisplayArray.push(forwardArrow);
+							addChild(forwardArrow);
+							break;
+						case Bug.TURNLEFT:
+							turnLeft = new turnLeftArrow();
+							turnLeft.y = (300 + 125*(moves.length - 1));
+							turnLeft.x = 200;
+							moveDisplayArray.push(turnLeft);
+							addChild(turnLeft);
+							break;
+						case Bug.TURNRIGHT:
+							turnRight = new turnRightArrow();
+							turnRight.y = (300 + 125*(moves.length - 1));
+							turnRight.x = 200;
+							moveDisplayArray.push(turnRight);
+							addChild(turnRight);
 					}
 				}
 				
-				if (intermediateMoves.length > 0) {
-					//player deletes move
-					if(e.keyCode == 40) {
-						intermediateMoves.splice(-1, 1);
-						var tmp = moveDisplayArray.splice(-1, 1);
-						removeChild(tmp[0]);
-					} 
-				} 
-				
-				toggleGoButton();
+				updateGoButton();
 			}
 		}
 		
-		// Execute the moves that have been inputted (intermediate mode)
-		public function executeIntermediateMoves(e:TimerEvent=null){
-			switch(intermediateMoves[0]) {
-				case 37:
-					character.turnLeft();
-					break;
-				case 39:
-					character.turnRight();
-					break;
-				case 38:
-					character.move();
-					break;
-				default:
-			}
-			intermediateMoves.shift();
-		}
-		
-		public function clickGo(Event:MouseEvent) {
-			if (intermediateMoves.length == 4) {
-				movementDelay.start();
-				stage.removeEventListener(KeyboardEvent.KEY_DOWN, pushCharacterIntermediate);
-			}
-		}
-		
-		// Reset delay timer after it has ticked the set amount of 4 times
-		public function resetTimer(e:TimerEvent) {
-			movementDelay.reset();
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, pushCharacterIntermediate);
-			removeDisplay();
-			moveDisplayArray = [];
-			
-		}
-		
-		// removes the display arrows
-		public function removeDisplay() {
-			for (var i=0; i< moveDisplayArray.length; i++) {
-				removeChild(moveDisplayArray[i]);
-			}
-		}
-		
-		// toggle whether the go button is greyed out or not
-		public function toggleGoButton() {
-			if (intermediateMoves.length < 4) {
+		// toggle between grey/green GoButton
+		private function updateGoButton() {
+			if (moves.length < 4) {
+				if (goButtonGreen.stage) {
+					removeChild(goButtonGreen);
+				}
 				addChild(goButton);
 			} else {
-				removeChild(goButton);
+				if (goButton.stage) {
+					removeChild(goButton);
+				}
 				addChild(goButtonGreen);
 			}
 		}

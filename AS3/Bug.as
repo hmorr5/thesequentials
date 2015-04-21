@@ -1,4 +1,4 @@
-﻿package  {
+﻿package {
 	
 	import flash.display.*;
 	import flash.events.*;
@@ -9,17 +9,21 @@
 	
 	public class Bug extends MovieClip{
 		
-		var grid:Grid;
-		
 		public static const EAST:uint = 0;
 		public static const SOUTH:uint = 1;
 		public static const WEST:uint = 2;
 		public static const NORTH:uint = 3;
 		
+		public static const UNDO:uint = 0;
+		public static const FORWARD:uint = 1;
+		public static const TURNLEFT:uint = 2;
+		public static const TURNRIGHT:uint = 3;
+		
+		var grid:Grid;
 		var direction:int;
 		
 		// for smooth rotation
-		var angle:int;
+		private var angle:int;
 		
 		public function Bug(grid:Grid, x:uint = 0, y:uint = 0, direction:uint = EAST) {
 	 	 	this.x = grid.x + (x + 0.5) * grid.dx;
@@ -41,10 +45,29 @@
 			}
 		}
 		
-		/**
-		 * @param direction 0: East, 1: South, 2: West, 3: North
-		 */
-		public function move():void {
+		public function move(action:uint):void {
+			switch (action) {
+				case UNDO:
+					undo();
+					break;
+				case FORWARD:
+					forward();
+					break;
+				case TURNLEFT:
+					turnLeft();
+					break;
+				case TURNRIGHT:
+					turnRight();
+					break;
+				default:
+			}
+		}
+		
+		public function undo():void {
+			// TODO: implement undo for real-time mode
+		}
+		
+		public function forward():void {
 			var dx:int, dy:int;
 			
 			// calculate offsets for x and y

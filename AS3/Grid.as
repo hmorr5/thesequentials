@@ -1,4 +1,4 @@
-﻿package  {
+﻿package {
 	
 	import com.frigidfish.Grid;
 	
@@ -18,7 +18,5 @@
 				this.dy = this.cell[0].height + 1;
 			}
 		}
-
 	}
-	
 }

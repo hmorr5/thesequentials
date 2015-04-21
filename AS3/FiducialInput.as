@@ -1,4 +1,4 @@
-﻿package  {
+﻿package {
 	
 	import flash.display.*;
 	
@@ -44,7 +44,6 @@
 		public function removeTuioObject(tuioObject:TuioObject):void {
 		}
 
-		
 		/**
 		 * Called if a new cursor was tracked.
 		 * @param	tuioObject The values of the received /tuio/**Dcur.
@@ -65,7 +64,6 @@
 		 */
 		public function removeTuioCursor(tuioCursor:TuioCursor):void {
 		}
-		
 		
 		/**
 		 * Called if a new blob was tracked.
@@ -94,7 +92,5 @@
 		 */
 		public function newFrame(id:uint):void {
 		}
-
 	}
-	
 }

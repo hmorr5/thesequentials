@@ -11,14 +11,14 @@
 		var movementDelay = new Timer(1000, 4);
 		
 		//Arrays
-		var intermediateMoves:Array = [];
-		var moveDisplayArray:Array = [];
+		var intermediateMoves:Array;
+		var moveDisplayArray:Array;
 		
 		//These are all vars for symbols (images)
-		var checkList;
-		var character:Bug;
 		var mainMenu:menu;
 		var gameGrid:Grid;
+		var character:Bug;
+		var checkList;
 		var goButton;
 		var goButtonGreen;
 		var moveList;
@@ -34,6 +34,13 @@
 			
 			mainMenu = new menu(this);
 			addChild(mainMenu);
+			
+			gameGrid = new Grid(8,8,0);
+			gameGrid.x = 400;
+			gameGrid.y = 50;
+			
+			character = new Bug(gameGrid);
+			character.gotoAndStop(1);
 			
 			checkList = new mockList;
 			checkList.x = 1350;
@@ -54,19 +61,15 @@
 			forwardArrow = new goForwardArrow;
 			turnRight = new turnRightArrow;
 			turnLeft = new turnLeftArrow;
+			
+			intermediateMoves = [];
+			moveDisplayArray = [];
 		}
 		
 		//Start the game in real time easy mode
 		public function startEasyMode() {
-			var gameGrid:Grid = new Grid(8,8,0);
-			gameGrid.x = 400;
-			gameGrid.y = 50;
 			addChild(gameGrid);
-			
-			character = new Bug(gameGrid);
 			addChild(character);
-			character.gotoAndStop(1);
-			
 			addChild(checkList);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, moveCharacterEasy);
@@ -74,15 +77,8 @@
 		
 		//Start the game in intermediate mode.  Bug moves every 4 inputs.
 		public function startIntermediateMode() {
-			var gameGrid:Grid = new Grid(8,8,0);
-			gameGrid.x = 400;
-			gameGrid.y = 50;
 			addChild(gameGrid);
-			
-			character = new Bug(gameGrid);
 			addChild(character);
-			character.gotoAndStop(1);
-			
 			addChild(checkList);
 			addChild(goButton);
 			addChild(moveList);
@@ -118,7 +114,7 @@
 				if (intermediateMoves.length < 4) {
 					//Player turns left
 					if(e.keyCode == 37) {
-						intermediateMoves.push("37");
+						intermediateMoves.push(37);
 						turnLeft = new turnLeftArrow();
 						turnLeft.y = (300 + 125*(intermediateMoves.length - 1));
 						turnLeft.x = 200;
@@ -128,7 +124,7 @@
 				
 					//Player turns right
 					else if(e.keyCode == 39) {
-						intermediateMoves.push("39");
+						intermediateMoves.push(39);
 						turnRight = new turnRightArrow();
 						turnRight.y = (300 + 125*(intermediateMoves.length - 1));
 						turnRight.x = 200;
@@ -138,7 +134,7 @@
 				
 					//player moves up
 					else if(e.keyCode == 38) {
-						intermediateMoves.push("38");
+						intermediateMoves.push(38);
 						forwardArrow = new goForwardArrow();
 						forwardArrow.y = (300 + 125*(intermediateMoves.length - 1));
 						forwardArrow.x = 200;

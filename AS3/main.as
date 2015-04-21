@@ -75,8 +75,7 @@
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {   
 				if (!block_KEY_DOWN && e.keyCode in codeMap) {
 					input(codeMap[e.keyCode]);
-				} else if (block_KEY_DOWN) { trace("blocked " + e.keyCode);
-				} else trace("keycode " + e.keyCode + " is not in the map");
+				}
 			});
 			
 			mode = EASY;
@@ -85,7 +84,31 @@
 		private function setupIntermediateMode() {
 			setupAdvancedMode();
 			
-			// TODO: setup ghost
+			var ghostDelay = new Timer(15000);
+			ghostDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
+				if (moves.length > 0) {
+					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
+					
+					var ghost:Bug = new Bug(gameGrid, character.posX, character.posY, character.direction, 0.25);
+					ghost.gotoAndStop(1);
+					addChild(ghost);
+					
+					var ghostTick = new Timer(500, 2 * tmpMoves.length);
+					ghostTick.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+						var count:int = ghostTick.currentCount - 1;
+						if (count < tmpMoves.length) {
+							ghost.move(tmpMoves[count]);
+						} else if (count > tmpMoves.length){
+							ghost.reverse(tmpMoves[2 * tmpMoves.length - count]);
+						}
+					});
+					ghostTick.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
+						removeChild(ghost);
+					});
+					ghostTick.start();
+				}
+			});
+			ghostDelay.start();
 			
 			mode = INTERMEDIATE;
 		}
@@ -124,7 +147,7 @@
 					block_KEY_DOWN = true;
 				}
 			});
-			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
+			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 				character.move(moves[0]);
 				moves.shift();
 			});
@@ -167,8 +190,7 @@
 		/**
 		 * Process input depending on the selected mode:
 		 *  - EASY (real time)
-		 *  - INTERMEDIATE / ADVANCED (store in moves array and show symbol)
-		 *  - 
+		 *  - INTERMEDIATE / ADVANCED (work in moves array and show arrows in moveDisplayArray)
 		 */
 		public function input(input:uint):void {
 			if (mode == EASY) {

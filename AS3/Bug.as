@@ -19,6 +19,9 @@
 		public static const TURNLEFT:uint = 2;
 		public static const TURNRIGHT:uint = 3;
 		
+		public var posX:uint;
+		public var posY:uint;
+		
 		var grid:Grid;
 		var direction:int;
 		
@@ -27,26 +30,31 @@
 		
 		private var last:uint;
 		
-		public function Bug(grid:Grid, x:uint = 0, y:uint = 0, direction:uint = EAST) {
-	 	 	this.x = grid.x + (x + 0.5) * grid.dx;
-	 	 	this.y = grid.y + (y + 0.5) * grid.dy;
+		public function Bug(grid:Grid, posX:uint = 0, posY:uint = 0, direction:uint = EAST, alpha:Number = 1.0) {
+			this.posX = posX;
+			this.posY = posY;
 
 			this.direction = direction;
 			this.angle = 90 * direction;
 			
+			this.alpha = alpha;
+			
 			this.last = UNDO;
 			
 			this.grid = grid;
+			
+			updatePosition();
 		}
 
 		public function addX(dx) {
-			if (grid.x < this.x + dx && this.x + dx < grid.x + grid.cols * grid.dx)
-				this.x += dx;
+			if (0 <= this.posX + dx && this.posX + dx < grid.cols) {
+				this.posX += dx;
+			}
 		}
 		
 		public function addY(dy) {
-			if (grid.y < this.y + dy && this.y + dy < grid.y + grid.rows * grid.dy){
-				this.y += dy;
+			if (0 <= this.posY + dy && this.posY + dy < grid.rows){
+				this.posY += dy;
 			}
 		}
 		
@@ -97,8 +105,10 @@
 			dx = -1 * ((direction - 1) % 2); // 0: 1, 1: 0, 2: -1, 3: 0
 			dy = -1 * ((direction - 2) % 2); // 0: 0, 1: 1, 2: 0, 3: -1
 			
-			addX(dx * grid.dx);
-			addY(dy * grid.dy);
+			addX(dx);
+			addY(dy);
+			
+			updatePosition();
 			
 			last = FORWARD;
 		}
@@ -125,6 +135,11 @@
 			angle %= 360;
 			
 			last = TURNRIGHT;
+		}
+		
+		public function updatePosition():void {
+			this.x = grid.x + (posX + 0.5) * grid.dx;
+			this.y = grid.y + (posY + 0.5) * grid.dy;
 		}
 	}
 }

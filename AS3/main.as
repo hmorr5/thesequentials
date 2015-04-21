@@ -84,7 +84,7 @@
 		private function setupIntermediateMode() {
 			setupAdvancedMode();
 			
-			var ghostDelay = new Timer(15000);
+			var ghostDelay:Timer = new Timer(15000);
 			ghostDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
 				if (moves.length > 0) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
@@ -95,6 +95,10 @@
 					
 					var ghostTick = new Timer(500, 2 * tmpMoves.length);
 					ghostTick.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+						if (block_KEY_DOWN) {
+							ghostTick.stop();
+							removeChild(ghost);
+						}
 						var count:int = ghostTick.currentCount - 1;
 						if (count < tmpMoves.length) {
 							ghost.move(tmpMoves[count]);

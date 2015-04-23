@@ -9,11 +9,6 @@
 	
 	public class Bug extends MovieClip{
 		
-		public static const EAST:uint = 0;
-		public static const SOUTH:uint = 1;
-		public static const WEST:uint = 2;
-		public static const NORTH:uint = 3;
-		
 		public static const UNDO:uint = 0;
 		public static const FORWARD:uint = 1;
 		public static const TURNLEFT:uint = 2;
@@ -28,9 +23,16 @@
 		// for smooth rotation
 		private var angle:int;
 		
+		// store the last performed action for undo()
 		private var last:uint;
 		
-		public function Bug(grid:Grid, posX:uint = 0, posY:uint = 0, direction:uint = EAST, alpha:Number = 1.0) {
+		/**
+		 * Adds a new bug to the grid and positions it correctly.
+		 * 
+		 * @param direction Uses the directions Grid.EAST, Grid.SOUTH, Grid.WEST and Grid.NORTH.
+		 * @param alpha Controls the transparency of the bug.
+		 */
+		public function Bug(grid:Grid, posX:uint = 0, posY:uint = 0, direction:uint = 0, alpha:Number = 1.0) {
 			this.posX = posX;
 			this.posY = posY;
 
@@ -44,18 +46,6 @@
 			this.grid = grid;
 			
 			updatePosition();
-		}
-
-		public function addX(dx) {
-			if (0 <= this.posX + dx && this.posX + dx < grid.cols) {
-				this.posX += dx;
-			}
-		}
-		
-		public function addY(dy) {
-			if (0 <= this.posY + dy && this.posY + dy < grid.rows){
-				this.posY += dy;
-			}
 		}
 		
 		public function move(action:uint):void {
@@ -105,8 +95,10 @@
 			dx = -1 * ((direction - 1) % 2); // 0: 1, 1: 0, 2: -1, 3: 0
 			dy = -1 * ((direction - 2) % 2); // 0: 0, 1: 1, 2: 0, 3: -1
 			
-			addX(dx);
-			addY(dy);
+			if (grid.isAccessible(posX + dx, posY + dy, direction)){
+				this.posX += dx;
+				this.posY += dy;
+			}
 			
 			updatePosition();
 			

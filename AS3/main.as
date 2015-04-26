@@ -19,6 +19,7 @@
 		
 		// handles the input and calls
 		var fiducial:FiducialInput;
+		var keyboard:KeyboardInput;
 		
 		// basic display objects
 		var mainMenu:menu;
@@ -47,6 +48,7 @@
 			codeMap[40] = Bug.UNDO;
 			
 			fiducial = new FiducialInput(this);
+			keyboard = new KeyboardInput(this);
 			
 			mainMenu = new menu(this);
 			addChild(mainMenu);

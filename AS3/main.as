@@ -72,7 +72,7 @@
 			
 			block_KEY_DOWN = false;
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {   
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
 				if (!block_KEY_DOWN && e.keyCode in codeMap) {
 					input(codeMap[e.keyCode]);
 				}
@@ -201,9 +201,11 @@
 				character.move(input);
 			} else { // intermediate/advanced mode
 				if (input == Bug.UNDO) {
-					moves.splice(-1, 1);
-					var tmp = moveDisplayArray.splice(-1, 1);
-					removeChild(tmp[0]);
+					if (moves.length > 0) {
+						moves.splice(-1, 1);
+						var tmp = moveDisplayArray.splice(-1, 1);
+						removeChild(tmp[0]);
+					}
 				} else if (moves.length < 4) {
 					moves.push(input);
 					
@@ -235,7 +237,9 @@
 			}
 		}
 		
-		// toggle between grey/green GoButton
+		/**
+		 * Toggles between grey/green GoButton.
+		 */
 		private function updateGoButton() {
 			if (moves.length < 4) {
 				if (goButtonGreen.stage) {

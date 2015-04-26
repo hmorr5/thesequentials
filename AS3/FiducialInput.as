@@ -9,14 +9,12 @@
 	import org.tuio.TuioObject;
 	import org.tuio.connectors.LCConnector;
 	
-	public class FiducialInput implements ITuioListener {
-
-		private var document:main;
+	public class FiducialInput extends Input implements ITuioListener {
 
 		private var tuio:TuioClient;
 		
 		public function FiducialInput(document:main) {
-			this.document = document;
+			super(document);
 			
 			this.tuio = new TuioClient(new LCConnector());
 			this.tuio.addListener(this);
@@ -27,7 +25,7 @@
 		 * @param	tuioObject The values of the received /tuio/**Dobj.
 		 */
 		public function addTuioObject(tuioObject:TuioObject):void {
-			document.input(tuioObject.classID);
+			input(tuioObject.classID);
 		}
 		
 		/**

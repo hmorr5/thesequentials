@@ -100,6 +100,15 @@
 			if (grid.isAccessible(posX + dx, posY + dy, direction)){
 				this.posX += dx;
 				this.posY += dy;
+
+				//This keeps bouncing the ant back to the initial position.  Not sure why, sorry.  :(
+//				TweenMax.to(this, 1, {x: this.posX += dx});
+//				TweenMax.to(this, 1, {y: this.posY += dy});
+//				
+//				trace("dx: " + dx);
+//				trace("dy: " + dy);
+//				trace("posX: " + posX);
+//				trace("posY: " + posY);
 			
 				last = FORWARD;
 			} else {

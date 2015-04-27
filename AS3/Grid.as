@@ -16,9 +16,6 @@
 			this.dx = 0;
 			this.dy = 0;
 			
-			this.rows = rows;
-			this.cols = cols;
-			
 			super(Token, rows, cols, 0);
 			
 			if (rows > 0 && cols > 0) {

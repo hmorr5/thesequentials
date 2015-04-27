@@ -12,7 +12,7 @@
 		protected function input(input:uint):void {
 			var tmp = 0, cube = -1;
 			if (input > 0) {
-				tmp = ((input + 2) % 3) + 1;
+				tmp = ((input + Bug.MOVES - 1) % Bug.MOVES) + 1;
 				cube = (input - tmp) / 3;
 				
 				if (cube == last) {

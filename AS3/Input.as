@@ -19,13 +19,13 @@
 				cube = (input - tmp) / 3;
 				
 				if (cube == last) {
-					document.input(0);
+					document.newInput(0);
 				}
 			}
 			
 			if (next < 0 || cube == last || cube == next) {
 				last = cube;
-				document.input(tmp);
+				document.newInput(tmp);
 			}
 		}
 	}

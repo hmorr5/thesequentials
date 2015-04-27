@@ -20,8 +20,7 @@
 		private var codeMap:Dictionary;
 		
 		// handles the input and calls
-		var fiducial:FiducialInput;
-		var keyboard:KeyboardInput;
+		var input:Input;
 		
 		// basic display objects
 		var mainMenu:menu;
@@ -50,10 +49,13 @@
 			codeMap[39] = Bug.TURNRIGHT;
 			codeMap[40] = Bug.UNDO;
 			
-			fiducial = new FiducialInput(this);
-			fiducial.next = 0;
-			keyboard = new KeyboardInput(this);
-			keyboard.next = 0;
+			/*
+			input = new FiducialInput(this);
+			/*/
+			input = new KeyboardInput(this);
+			// */
+			
+			input.next = 0;
 			
 			mainMenu = new menu(this);
 			addChild(mainMenu);
@@ -86,7 +88,7 @@
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
 				if (!block_KEY_DOWN && e.keyCode in codeMap) {
-					input(codeMap[e.keyCode]);
+					newInput(codeMap[e.keyCode]);
 				}
 			});
 			
@@ -162,8 +164,7 @@
 					movementDelay.start();
 					block_KEY_DOWN = true;
 					
-					fiducial.last = -1;
-					keyboard.last = -1;
+					input.last = -1;
 				}
 			});
 			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
@@ -211,7 +212,7 @@
 		 *  - EASY (real time)
 		 *  - INTERMEDIATE / ADVANCED (work in moves array and show arrows in moveDisplayArray)
 		 */
-		public function input(input:uint):void {
+		public function newInput(input:uint):void {
 			if (mode == EASY) {
 				character.move(input);
 				nextInput();
@@ -255,11 +256,8 @@
 		}
 		
 		private function nextInput():void {
-			if (fiducial.next != -1) {
-				fiducial.next = (fiducial.last + 1) % CUBES;
-			}
-			if (keyboard.next != -1) {
-				keyboard.next = (keyboard.last + 1) % CUBES;
+			if (input.next != -1) {
+				input.next = (input.last + 1) % cubeColor.length;
 			}
 		}
 		

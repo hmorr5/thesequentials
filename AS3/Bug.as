@@ -100,11 +100,13 @@
 			if (grid.isAccessible(posX + dx, posY + dy, direction)){
 				this.posX += dx;
 				this.posY += dy;
+			
+				last = FORWARD;
+			} else {
+				last = UNDO;
 			}
 			
 			updatePosition();
-			
-			last = FORWARD;
 		}
 		
 		public function turnLeft():void {

@@ -3,10 +3,13 @@
 	public class Input {
 		
 		private var document;
-		private var last;
+		private var last:int;
+		private var next:int;
 
 		public function Input(document:main) {
 			this.document = document;
+			this.last = -1;
+			this.next = -1;
 		}
 
 		protected function input(input:uint):void {
@@ -20,8 +23,14 @@
 				}
 			}
 			
-			document.input(tmp);
-			last = cube;
+			if (next < 0 || cube == last || cube == next) {
+				document.input(tmp);
+				last = cube;
+			}
+		}
+		
+		public function setNext(next:int) {
+			this.next = next;
 		}
 	}
 	

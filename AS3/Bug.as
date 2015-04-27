@@ -39,7 +39,14 @@
 			this.posY = posY;
 
 			this.direction = direction;
-			this.angle = 90 * direction;
+			this.angle = 0;
+			if (direction != 0) {
+			TweenMax.to(this, 0, {
+				shortRotation: {
+					rotation: angle = 90 * direction
+				}
+			});
+			}
 			
 			this.alpha = alpha;
 			

@@ -115,11 +115,11 @@
 				if (moves.length > 0) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
 					
-					var ghost:Bug = new Bug(gameGrid, character.posX, character.posY, character.direction, 0.25);
+					var ghost:Bug = new Bug(gameGrid, character.posX, character.posY, character.direction, 0.5);
 					ghost.gotoAndStop(1);
 					addChild(ghost);
 					
-					var ghostTick = new Timer(500, 2 * tmpMoves.length);
+					var ghostTick = new Timer(500, 2 * tmpMoves.length + 2);
 					ghostTick.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 						if (block_KEY_DOWN) {
 							ghostTick.stop();
@@ -128,7 +128,7 @@
 						var count:int = ghostTick.currentCount - 1;
 						if (count < tmpMoves.length) {
 							ghost.move(tmpMoves[count]);
-						} else if (count > tmpMoves.length){
+						} else if (tmpMoves.length < count && count <= 2 * tmpMoves.length){
 							ghost.reverse(tmpMoves[2 * tmpMoves.length - count]);
 						}
 					});

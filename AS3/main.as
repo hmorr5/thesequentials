@@ -11,6 +11,8 @@
 		static const INTERMEDIATE:uint = 1;
 		static const ADVANCED:uint = 2;
 		
+		static const CUBES:uint = 3;
+		
 		var mode:uint;
 		var block_KEY_DOWN:Boolean;
 		

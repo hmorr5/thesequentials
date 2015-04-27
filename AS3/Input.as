@@ -3,8 +3,8 @@
 	public class Input {
 		
 		private var document;
-		private var last:int;
-		private var next:int;
+		public var last:int;
+		public var next:int;
 
 		public function Input(document:main) {
 			this.document = document;
@@ -27,10 +27,6 @@
 				document.input(tmp);
 				last = cube;
 			}
-		}
-		
-		public function setNext(next:int) {
-			this.next = next;
 		}
 	}
 	

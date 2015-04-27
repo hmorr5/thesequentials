@@ -11,26 +11,25 @@
 		var beginnerLevelButton;
 		var intermediateLevelButton;
 		var advnacedLevelButton;
+		var backgroundPicture;
 
 		public function menu(d:main) {
 			this.document = d;
 			
-			titleText = new mainTitle;
-			titleText.x = 950;
-			titleText.y = 125;
+			backgroundPicture = new backgroundImage;
 			
 			beginnerLevelButton = new beginnerText;
-			beginnerLevelButton.x = 950;
-			beginnerLevelButton.y = 400;
+			beginnerLevelButton.x = 940;
+			beginnerLevelButton.y = 600;
 			beginnerLevelButton.addEventListener(MouseEvent.CLICK, beginnerButtonClick);
 			
 			intermediateLevelButton = new intermediateText;
-			intermediateLevelButton.x = 950;
-			intermediateLevelButton.y = 600;
+			intermediateLevelButton.x = 940;
+			intermediateLevelButton.y = 700;
 			intermediateLevelButton.addEventListener(MouseEvent.CLICK, intermediateButtonClick);
 			
 			advnacedLevelButton = new advancedText;
-			advnacedLevelButton.x = 950;
+			advnacedLevelButton.x = 940;
 			advnacedLevelButton.y = 800;
 			advnacedLevelButton.addEventListener(MouseEvent.CLICK, advancedButtonClick);
 			
@@ -53,14 +52,14 @@
 		}
 		
 		private function loadMenu(){
-			addChild(titleText);
+			addChild(backgroundPicture);
 			addChild(beginnerLevelButton);
 			addChild(intermediateLevelButton);
 			addChild(advnacedLevelButton);
 		}
 		
 		private function removeMenu() {
-			removeChild(titleText);
+			removeChild(backgroundPicture);
 			removeChild(beginnerLevelButton);
 			removeChild(intermediateLevelButton);
 			removeChild(advnacedLevelButton);

@@ -24,8 +24,8 @@
 			}
 			
 			if (next < 0 || cube == last || cube == next) {
-				document.input(tmp);
 				last = cube;
+				document.input(tmp);
 			}
 		}
 	}

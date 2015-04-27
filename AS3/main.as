@@ -50,7 +50,9 @@
 			codeMap[40] = Bug.UNDO;
 			
 			fiducial = new FiducialInput(this);
+			fiducial.next = 0;
 			keyboard = new KeyboardInput(this);
+			keyboard.next = 0;
 			
 			mainMenu = new menu(this);
 			addChild(mainMenu);
@@ -153,6 +155,9 @@
 				if (moves.length == 4) {
 					movementDelay.start();
 					block_KEY_DOWN = true;
+					
+					fiducial.last = -1;
+					keyboard.last = -1;
 				}
 			});
 			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
@@ -237,7 +242,17 @@
 					}
 				}
 				
+				nextInput();
 				updateGoButton();
+			}
+		}
+		
+		private function nextInput():void {
+			if (fiducial.next != -1) {
+				fiducial.next = (fiducial.last + 1) % CUBES;
+			}
+			if (keyboard.next != -1) {
+				keyboard.next = (keyboard.last + 1) % CUBES;
 			}
 		}
 		

@@ -4,6 +4,7 @@
 	import flash.events.*;
 	import flash.text.*;
 	import flash.utils.*;
+	import flash.geom.ColorTransform;
 	
 	public class main extends MovieClip{
 		
@@ -11,7 +12,7 @@
 		static const INTERMEDIATE:uint = 1;
 		static const ADVANCED:uint = 2;
 		
-		static const CUBES:uint = 3;
+		static const cubeColor:Array = [0xff0000, 0x00ff00, 0x0000ff];
 		
 		var mode:uint;
 		var block_KEY_DOWN:Boolean;
@@ -33,6 +34,8 @@
 		var moveDisplayArray:Array;
 		var moveList;
 		var nextCube;
+		var nextCubeArea;
+		var nextCubeDisplay;
 		var forwardArrow;
 		var turnRight;
 		var turnLeft;
@@ -73,7 +76,14 @@
 			
 			nextCube = new nextText;
 			nextCube.x = 1420;
-			nextCube.y = 650;
+			nextCube.y = 725;
+			
+			nextCubeArea = new nextArea;
+			nextCubeArea.x = 1350;
+			nextCubeArea.y = 725;
+			
+			nextCubeDisplay = new ColorTransform();
+			nextCubeArea.transform.colorTransform = nextCubeDisplay;
 			
 			mode = EASY;
 		}
@@ -82,7 +92,9 @@
 			addChild(gameGrid);
 			addChild(character);
 			addChild(checkList);
+			addChild(nextCubeArea);
 			addChild(nextCube);
+			nextInput();
 			
 			block_KEY_DOWN = false;
 			
@@ -258,6 +270,9 @@
 		private function nextInput():void {
 			if (input.next != -1) {
 				input.next = (input.last + 1) % cubeColor.length;
+				
+				nextCubeDisplay.color = cubeColor[input.next];
+				nextCubeArea.transform.colorTransform = nextCubeDisplay;
 			}
 		}
 		

@@ -33,6 +33,7 @@
 		var moves:Array;
 		var moveDisplayArray:Array;
 		var moveList;
+		var nextCube;
 		var forwardArrow;
 		var turnRight;
 		var turnLeft;
@@ -68,6 +69,10 @@
 			checkList.x = 1350;
 			checkList.y = 50;
 			
+			nextCube = new nextText;
+			nextCube.x = 1420;
+			nextCube.y = 650;
+			
 			mode = EASY;
 		}
 		
@@ -75,6 +80,7 @@
 			addChild(gameGrid);
 			addChild(character);
 			addChild(checkList);
+			addChild(nextCube);
 			
 			block_KEY_DOWN = false;
 			
@@ -208,6 +214,7 @@
 		public function input(input:uint):void {
 			if (mode == EASY) {
 				character.move(input);
+				nextInput();
 			} else { // intermediate/advanced mode
 				if (input == Bug.UNDO) {
 					if (moves.length > 0) {

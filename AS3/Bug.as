@@ -54,7 +54,7 @@
 			
 			this.grid = grid;
 			
-			updatePosition();
+			updatePosition(false);
 		}
 		
 		public function move(action:uint):void {
@@ -107,15 +107,6 @@
 			if (grid.isAccessible(posX + dx, posY + dy, direction)){
 				this.posX += dx;
 				this.posY += dy;
-
-				//This keeps bouncing the ant back to the initial position.  Not sure why, sorry.  :(
-//				TweenMax.to(this, 1, {x: this.posX += dx});
-//				TweenMax.to(this, 1, {y: this.posY += dy});
-//				
-//				trace("dx: " + dx);
-//				trace("dy: " + dy);
-//				trace("posX: " + posX);
-//				trace("posY: " + posY);
 			
 				last = FORWARD;
 			} else {
@@ -149,9 +140,14 @@
 			last = TURNRIGHT;
 		}
 		
-		public function updatePosition():void {
-			this.x = grid.x + (posX + 0.5) * grid.dx;
-			this.y = grid.y + (posY + 0.5) * grid.dy;
+		public function updatePosition(animate:Boolean = true):void {
+			if (animate) {
+				TweenMax.to(this, 1, {x: grid.x + (posX + 0.5) * grid.dx});
+				TweenMax.to(this, 1, {y: grid.y + (posY + 0.5) * grid.dy});
+			} else {
+				this.x = grid.x + (posX + 0.5) * grid.dx;
+				this.y = grid.y + (posY + 0.5) * grid.dy;
+			}
 		}
 	}
 }

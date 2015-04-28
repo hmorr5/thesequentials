@@ -30,6 +30,8 @@
 		// store the last performed action for undo()
 		private var last:uint;
 		
+		private var message;
+		
 		/**
 		 * Adds a new bug to the grid and positions it correctly.
 		 * 
@@ -57,6 +59,14 @@
 			this.last = UNDO;
 			
 			this.grid = grid;
+			
+			this.message = new dialog;
+			message.x = 940;
+			message.y = 500;
+			message.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
+				document.allowInput();
+				document.removeChild(message);
+			});
 			
 			updatePosition(false);
 		}
@@ -118,7 +128,8 @@
 			}
 			
 			if (grid.isGoal(posX, posY)) {
-				trace("YEY!"); // TODO show dialog and restart
+				document.addChild(message);
+				document.blockInput();
 			}
 			
 			updatePosition();

@@ -12,7 +12,13 @@
 		public var dx:uint;
 		public var dy:uint;
 		
-		public function Grid(rows, cols) {
+		private var goal;
+		private var goalX:uint;
+		private var goalY:uint;
+		
+		public function Grid(rows, cols, goalX = 6, goalY = 6) {
+			this.goalX = goalX;
+			this.goalY = goalY;
 			this.dx = 0;
 			this.dy = 0;
 			
@@ -22,10 +28,19 @@
 				this.dx = this.cell[0].width + 1; // +1 for the border
 				this.dy = this.cell[0].height + 1;
 			}
+			
+			goal = new diamond;
+			goal.x = x + (goalX + 0.5) * dx;
+			goal.y = y + (goalY + 0.5) * dy;
+			addChild(goal);
 		}
 		
 		public function isAccessible(posX:uint, posY:uint, fromDirection:uint):Boolean {
 			return (0 <= posX && posX < this.cols && 0 <= posY && posY < this.rows);
+		}
+		
+		public function isGoal(posX:uint, posY:uint):Boolean {
+			return (posX == goalX && posY == goalY);
 		}
 	}
 }

@@ -113,6 +113,10 @@
 				last = UNDO;
 			}
 			
+			if (grid.isGoal(posX, posY)) {
+				trace("YEY!"); // TODO show dialog and restart
+			}
+			
 			updatePosition();
 		}
 		

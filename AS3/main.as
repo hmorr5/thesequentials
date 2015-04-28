@@ -171,14 +171,13 @@
 			
 			movementDelay = new Timer(1000, 4);
 			
-			goButtonGreen.addEventListener(MouseEvent.CLICK, function(Event:MouseEvent):void {
-				if (moves.length == 4) {
-					movementDelay.start();
-					block_KEY_DOWN = true;
-					
-					input.last = -1;
+			goButtonGreen.addEventListener(MouseEvent.CLICK, clickGoButton);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
+				if (e.keyCode == 32) { // spacebar
+					clickGoButton();
 				}
 			});
+			
 			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 				character.move(moves[0]);
 				moves.shift();
@@ -273,6 +272,15 @@
 				
 				nextCubeDisplay.color = cubeColor[input.next];
 				nextCubeArea.transform.colorTransform = nextCubeDisplay;
+			}
+		}
+		
+		private function clickGoButton(e:MouseEvent = null):void {
+			if (moves.length == 4) {
+				movementDelay.start();
+				block_KEY_DOWN = true;
+				
+				input.last = -1;
 			}
 		}
 		

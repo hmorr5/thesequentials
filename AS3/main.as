@@ -17,7 +17,7 @@
 		private var document:main;
 		
 		var mode:uint;
-		var block_KEY_DOWN:Boolean;
+		var block_newInput:Boolean;
 		
 		// maps keycodes to bug movements
 		private var codeMap:Dictionary;
@@ -100,10 +100,10 @@
 			addChild(nextCube);
 			nextInput();
 			
-			block_KEY_DOWN = false;
+			block_newInput = false;
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
-				if (!block_KEY_DOWN && e.keyCode in codeMap) {
+				if (e.keyCode in codeMap) {
 					newInput(codeMap[e.keyCode]);
 				}
 			});
@@ -125,7 +125,7 @@
 					
 					var ghostTick = new Timer(500, 2 * tmpMoves.length + 2);
 					ghostTick.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
-						if (block_KEY_DOWN) {
+						if (block_newInput) {
 							ghostTick.stop();
 							removeChild(ghost);
 						}
@@ -188,7 +188,7 @@
 			});
 			movementDelay.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
 				movementDelay.reset();
-				block_KEY_DOWN = false;
+				allowInput();
 				
 				// remove the display arrows
 				for (var i=0; i< moveDisplayArray.length; i++) {
@@ -228,6 +228,7 @@
 		 *  - INTERMEDIATE / ADVANCED (work in moves array and show arrows in moveDisplayArray)
 		 */
 		public function newInput(input:uint):void {
+			if (block_newInput) return;
 			if (mode == EASY) {
 				character.move(input);
 				nextInput();
@@ -270,6 +271,14 @@
 			}
 		}
 		
+		public function blockInput():void {
+			block_newInput = true;
+		}
+		
+		public function allowInput():void {
+			block_newInput = false;
+		}
+		
 		private function nextInput():void {
 			if (input.next != -1) {
 				input.next = (input.last + 1) % cubeColor.length;
@@ -282,7 +291,7 @@
 		private function clickGoButton(e:MouseEvent = null):void {
 			if (moves.length == 4) {
 				movementDelay.start();
-				block_KEY_DOWN = true;
+				blockInput();
 				
 				input.last = -1;
 			}

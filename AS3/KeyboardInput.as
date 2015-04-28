@@ -27,6 +27,7 @@
 				if (e.keyCode in codeMap) {
 					input(codeMap[e.keyCode]);
 				}
+				trace("keycode: " + e.keyCode);
 			});
 		}
 	}

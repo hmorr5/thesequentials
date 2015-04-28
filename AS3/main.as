@@ -12,7 +12,7 @@
 		static const INTERMEDIATE:uint = 1;
 		static const ADVANCED:uint = 2;
 		
-		static const cubeColor:Array = [0xff0000, 0x00ff00, 0x0000ff];
+		static const cubeColor:Array = [0xff0000, 0xffff00, 0xffdab9];
 		
 		var mode:uint;
 		var block_KEY_DOWN:Boolean;

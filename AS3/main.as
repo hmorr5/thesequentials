@@ -14,6 +14,8 @@
 		
 		static const cubeColor:Array = [0xff0000, 0xffff00, 0xffdab9];
 		
+		private var document:main;
+		
 		var mode:uint;
 		var block_KEY_DOWN:Boolean;
 		
@@ -52,6 +54,8 @@
 			codeMap[39] = Bug.TURNRIGHT;
 			codeMap[40] = Bug.UNDO;
 			
+			this.document = this;
+			
 			/*
 			input = new FiducialInput(this);
 			/*/
@@ -67,7 +71,7 @@
 			gameGrid.x = 400;
 			gameGrid.y = 50;
 			
-			character = new Bug(gameGrid);
+			character = new Bug(this, gameGrid);
 			character.gotoAndStop(1);
 			
 			checkList = new mockList;
@@ -115,7 +119,7 @@
 				if (moves.length > 0) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
 					
-					var ghost:Bug = new Bug(gameGrid, character.posX, character.posY, character.direction, 0.5);
+					var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0.5);
 					ghost.gotoAndStop(1);
 					addChild(ghost);
 					

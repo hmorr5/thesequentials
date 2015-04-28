@@ -16,6 +16,8 @@
 		public static const TURNLEFT:uint = 2;
 		public static const TURNRIGHT:uint = 3;
 		
+		private var document:main;
+		
 		public var posX:uint;
 		public var posY:uint;
 		
@@ -34,7 +36,9 @@
 		 * @param direction Uses the directions Grid.EAST, Grid.SOUTH, Grid.WEST and Grid.NORTH.
 		 * @param alpha Controls the transparency of the bug.
 		 */
-		public function Bug(grid:Grid, posX:uint = 0, posY:uint = 0, direction:uint = 0, alpha:Number = 1.0) {
+		public function Bug(document:main, grid:Grid, posX:uint = 0, posY:uint = 0, direction:uint = 0, alpha:Number = 1.0) {
+			this.document = document;
+			
 			this.posX = posX;
 			this.posY = posY;
 

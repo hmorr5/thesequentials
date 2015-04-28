@@ -34,13 +34,11 @@
 		// intermediate/advanced mode
 		var moves:Array;
 		var moveDisplayArray:Array;
+		var moveDisplayBackgrounds:Array;
 		var moveList;
 		var nextCube;
 		var nextCubeArea;
 		var nextCubeDisplay;
-		var forwardArrow;
-		var turnRight;
-		var turnLeft;
 		var goButton;
 		var goButtonGreen;
 		
@@ -56,7 +54,7 @@
 			
 			this.document = this;
 			
-			/*
+			//*
 			input = new FiducialInput(this);
 			/*/
 			input = new KeyboardInput(this);
@@ -87,7 +85,6 @@
 			nextCubeArea.y = 725;
 			
 			nextCubeDisplay = new ColorTransform();
-			nextCubeArea.transform.colorTransform = nextCubeDisplay;
 			
 			mode = EASY;
 		}
@@ -152,14 +149,11 @@
 			
 			moves = [];
 			moveDisplayArray = [];
+			moveDisplayBackgrounds = [];
 			
 			moveList = new inputText;
 			moveList.x = 200;
 			moveList.y = 150;
-			
-			forwardArrow = new goForwardArrow;
-			turnRight = new turnRightArrow;
-			turnLeft = new turnLeftArrow;
 			
 			goButton = new goText;
 			goButton.x = 200;
@@ -193,9 +187,11 @@
 				// remove the display arrows
 				for (var i=0; i< moveDisplayArray.length; i++) {
 					removeChild(moveDisplayArray[i]);
+					removeChild(moveDisplayBackgrounds[i]);
 				}
 				
 				moveDisplayArray = [];
+				moveDisplayBackgrounds = [];
 			});
 			
 			mode = ADVANCED;
@@ -238,35 +234,40 @@
 						moves.splice(-1, 1);
 						var tmp = moveDisplayArray.splice(-1, 1);
 						removeChild(tmp[0]);
+						tmp = moveDisplayBackgrounds.splice(-1, 1);
+						removeChild(tmp[0]);
+						
+						lastInput();
 					}
 				} else if (moves.length < 4) {
 					moves.push(input);
 					
+					var arrow;
 					switch (input) {
 						case Bug.FORWARD:
-							forwardArrow = new goForwardArrow();
-							forwardArrow.y = (300 + 125*(moves.length - 1));
-							forwardArrow.x = 200;
-							moveDisplayArray.push(forwardArrow);
-							addChild(forwardArrow);
+							arrow = new goForwardArrow();
 							break;
 						case Bug.TURNLEFT:
-							turnLeft = new turnLeftArrow();
-							turnLeft.y = (300 + 125*(moves.length - 1));
-							turnLeft.x = 200;
-							moveDisplayArray.push(turnLeft);
-							addChild(turnLeft);
+							arrow = new turnLeftArrow();
 							break;
 						case Bug.TURNRIGHT:
-							turnRight = new turnRightArrow();
-							turnRight.y = (300 + 125*(moves.length - 1));
-							turnRight.x = 200;
-							moveDisplayArray.push(turnRight);
-							addChild(turnRight);
+							arrow = new turnRightArrow();
+							break;
 					}
-				}
+					arrow.y = (300 + 130 * (moves.length - 1));
+					arrow.x = 200;
+					moveDisplayArray.push(arrow);
+					var background = new Token();
+					background.x = arrow.x - 0.5 * background.width;
+					background.y = arrow.y - 0.5 * background.height;
+					background.transform.colorTransform = nextCubeDisplay;
+					moveDisplayBackgrounds.push(background);
+					
+					addChild(background);
+					addChild(arrow);
 				
-				nextInput();
+					nextInput();
+				}
 				updateGoButton();
 			}
 		}
@@ -282,6 +283,15 @@
 		private function nextInput():void {
 			if (input.next != -1) {
 				input.next = (input.last + 1) % cubeColor.length;
+				
+				nextCubeDisplay.color = cubeColor[input.next];
+				nextCubeArea.transform.colorTransform = nextCubeDisplay;
+			}
+		}
+		
+		private function lastInput():void {
+			if (input.next != -1) {
+				input.next = input.last;
 				
 				nextCubeDisplay.color = cubeColor[input.next];
 				nextCubeArea.transform.colorTransform = nextCubeDisplay;

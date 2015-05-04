@@ -292,6 +292,7 @@
 		private function lastInput():void {
 			if (input.next != -1) {
 				input.next = input.last;
+				input.last = (input.last + cubeColor.length - 1) % cubeColor.length;
 				
 				nextCubeDisplay.color = cubeColor[input.next];
 				nextCubeArea.transform.colorTransform = nextCubeDisplay;

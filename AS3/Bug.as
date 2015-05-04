@@ -181,7 +181,7 @@
 				x: grid.x + (posX + 0.5 + 0.5 * ((direction + 1) % 2)) * Grid.DX,
 				y: grid.y + (posY + 0.5 + 0.5 * (direction % 2)) * Grid.DY
 			});
-			TweenMax.to(this, 1, {
+			TweenMax.to(this, 0.5, {
 				x: grid.x + (posX + 0.5) * Grid.DX,
 				y: grid.y + (posY + 0.5) * Grid.DY
 			});

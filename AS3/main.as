@@ -130,9 +130,9 @@
 						var count:int = ghostTick.currentCount - 1;
 						if (count < tmpMoves.length) {
 							ghost.move(tmpMoves[count]);
-						} else if (tmpMoves.length < count && count <= 2 * tmpMoves.length){
+						}/* else if (tmpMoves.length < count && count <= 2 * tmpMoves.length){
 							ghost.reverse(tmpMoves[2 * tmpMoves.length - count]);
-						}
+						}*/
 					});
 					ghostTick.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
 						removeChild(ghost);

@@ -14,7 +14,7 @@ To run the application, launch reacTIVision and the udpbridge (either from comma
 
 
 
-Cube Numbering
+Cube Numbering (After Teach Testing )
 [Direction] : [Feducial id] 
 The feducial for the direction will be on the oposite side of the cube since the cube will be placed onto the glass.
 

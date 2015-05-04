@@ -1,37 +1,32 @@
 ﻿package {
+	import flash.display.MovieClip;
 	
-	import com.frigidfish.Grid;
-	
-	public class Grid extends com.frigidfish.Grid {
+	public class Grid extends MovieClip {
 
 		public static const EAST:uint = 0;
 		public static const SOUTH:uint = 1;
 		public static const WEST:uint = 2;
 		public static const NORTH:uint = 3;
 
-		public var dx:uint;
-		public var dy:uint;
+		public static const DX:uint = 112;
+		public static const DY:uint = 112;
+		
+		public var rows;
+		public var cols;
 		
 		private var goal;
 		private var goalX:uint;
 		private var goalY:uint;
 		
-		public function Grid(rows, cols, goalX = 6, goalY = 6) {
+		public function Grid(rows, cols, goalX = 7, goalY = 7) {
 			this.goalX = goalX;
 			this.goalY = goalY;
-			this.dx = 0;
-			this.dy = 0;
-			
-			super(Token, rows, cols, 0);
-			
-			if (rows > 0 && cols > 0) {
-				this.dx = this.cell[0].width + 1; // +1 for the border
-				this.dy = this.cell[0].height + 1;
-			}
+			this.rows = rows;
+			this.cols = cols;
 			
 			goal = new diamond;
-			goal.x = x + (goalX + 0.5) * dx;
-			goal.y = y + (goalY + 0.5) * dy;
+			goal.x = x + (goalX + 0.5) * DX;
+			goal.y = y + (goalY + 0.5) * DY;
 			addChild(goal);
 		}
 		

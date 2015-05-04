@@ -161,11 +161,11 @@
 		
 		public function updatePosition(animate:Boolean = true):void {
 			if (animate) {
-				TweenMax.to(this, 1, {x: grid.x + (posX + 0.5) * grid.dx});
-				TweenMax.to(this, 1, {y: grid.y + (posY + 0.5) * grid.dy});
+				TweenMax.to(this, 1, {x: grid.x + (posX + 0.5) * Grid.DX});
+				TweenMax.to(this, 1, {y: grid.y + (posY + 0.5) * Grid.DY});
 			} else {
-				this.x = grid.x + (posX + 0.5) * grid.dx;
-				this.y = grid.y + (posY + 0.5) * grid.dy;
+				this.x = grid.x + (posX + 0.5) * Grid.DX;
+				this.y = grid.y + (posY + 0.5) * Grid.DY;
 			}
 		}
 	}

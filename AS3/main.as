@@ -113,7 +113,7 @@
 			
 			var ghostDelay:Timer = new Timer(15000);
 			ghostDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
-				if (moves.length > 0) {
+				if (moves.length > 0 && !block_newInput) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
 					
 					var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0.5);

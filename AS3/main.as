@@ -41,6 +41,7 @@
 		var nextCubeDisplay;
 		var goButton;
 		var goButtonGreen;
+		public var enableGoButton:Boolean;
 		
 		// delays movement of bug in intermediate/advanced mode
 		var movementDelay:Timer;
@@ -163,6 +164,8 @@
 			goButtonGreen.x = goButton.x;
 			goButtonGreen.y = goButton.y;
 			
+			enableGoButton = false;
+			
 			addChild(moveList);
 			
 			updateGoButton();
@@ -177,8 +180,10 @@
 			});
 			
 			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
-				character.move(moves[0]);
-				moves.shift();
+				if (moves.length > 0) {
+					character.move(moves[0]);
+					moves.shift();
+				}
 			});
 			movementDelay.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
 				movementDelay.reset();
@@ -291,7 +296,7 @@
 		
 		private function lastInput():void {
 			if (input.next != -1) {
-				input.next = input.last;
+				input.next = (input.last + cubeColor.length) % cubeColor.length;
 				input.last = (input.last + cubeColor.length - 1) % cubeColor.length;
 				
 				nextCubeDisplay.color = cubeColor[input.next];
@@ -300,7 +305,7 @@
 		}
 		
 		private function clickGoButton(e:MouseEvent = null):void {
-			if (moves.length == 4) {
+			if (moves.length == 4 || enableGoButton) {
 				movementDelay.start();
 				blockInput();
 				
@@ -313,15 +318,23 @@
 		 */
 		private function updateGoButton() {
 			if (moves.length < 4) {
-				if (goButtonGreen.stage) {
-					removeChild(goButtonGreen);
+				enableGoButton = false;
+				var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0);
+				ghost.gotoAndStop(1);
+				for (var i:Number = 0; i < moves.length; i++) {
+					ghost.move(moves[i]);
 				}
-				addChild(goButton);
-			} else {
+			}
+			if (moves.length == 4 || enableGoButton) {
 				if (goButton.stage) {
 					removeChild(goButton);
 				}
 				addChild(goButtonGreen);
+			} else {
+				if (goButtonGreen.stage) {
+					removeChild(goButtonGreen);
+				}
+				addChild(goButton);
 			}
 		}
 	}

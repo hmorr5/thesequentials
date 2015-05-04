@@ -125,8 +125,12 @@
 				last = FORWARD;
 				
 				if (grid.isGoal(posX, posY)) {
-					document.addChild(message);
-					document.blockInput();
+					if (alpha == 1.0) {
+						document.addChild(message);
+						document.blockInput();
+					} else {
+						document.enableGoButton = true;
+					}
 				}
 				
 				updatePosition();

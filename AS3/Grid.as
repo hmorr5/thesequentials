@@ -14,9 +14,10 @@
 		public var rows;
 		public var cols;
 		
-		private var goal;
 		private var goalX:uint;
 		private var goalY:uint;
+		
+		protected var block:Vector.<Vector.<Boolean>>;
 		
 		public function Grid(rows, cols, goalX = 7, goalY = 7) {
 			this.goalX = goalX;
@@ -24,14 +25,14 @@
 			this.rows = rows;
 			this.cols = cols;
 			
-			goal = new diamond;
-			goal.x = x + (goalX + 0.5) * DX;
-			goal.y = y + (goalY + 0.5) * DY;
-			addChild(goal);
+			block = new Vector.<Vector.<Boolean>>(rows, true);
+			for (var i:Number = 0; i < rows; i++) {
+				block[i] = new Vector.<Boolean>(cols, true);
+			}
 		}
 		
 		public function isAccessible(posX:uint, posY:uint, fromDirection:uint):Boolean {
-			return (0 <= posX && posX < this.cols && 0 <= posY && posY < this.rows);
+			return (0 <= posX && posX < this.cols && 0 <= posY && posY < this.rows && !block[posY][posX]);
 		}
 		
 		public function isGoal(posX:uint, posY:uint):Boolean {

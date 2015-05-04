@@ -35,7 +35,7 @@ Yellow cube
 - Unassigned Command 2 : 11
 - Unassigned Command 3 : 12
 
-Blue cube
+Blue cube//Weird Peach Colour
 - Foward : 13
 - Right : 14
 - Left : 15

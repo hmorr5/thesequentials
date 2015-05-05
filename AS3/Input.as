@@ -16,7 +16,7 @@
 			var tmp = 0, cube = -1;
 			if (input > 0) {
 				tmp = ((input + Bug.MOVES - 1) % Bug.MOVES) + 1;
-				cube = (input - tmp) / 3;
+				cube = (input - tmp) / Bug.MOVES;
 				
 				if (cube == last) {
 					document.newInput(0);

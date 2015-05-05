@@ -188,6 +188,7 @@
 			movementDelay.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
 				movementDelay.reset();
 				allowInput();
+				updateGoButton();
 				
 				// remove the display arrows
 				for (var i=0; i< moveDisplayArray.length; i++) {

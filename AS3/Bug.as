@@ -9,15 +9,12 @@
 	
 	public class Bug extends MovieClip{
 		
-		public static const MOVES:uint = 6;
+		public static const MOVES:uint = 3;
 		
 		public static const UNDO:uint = 0;
 		public static const FORWARD:uint = 1;
 		public static const TURNLEFT:uint = 2;
 		public static const TURNRIGHT:uint = 3;
-		public static const ACTION_4:uint = 4;
-		public static const ACTION_5:uint = 5;
-		public static const ACTION_6:uint = 6;
 		
 		private var document:main;
 		

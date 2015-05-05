@@ -16,12 +16,12 @@
 			codeMap[49] = 1;
 			codeMap[50] = 2;
 			codeMap[51] = 3;
-			codeMap[52] = 4;
-			codeMap[53] = 5;
-			codeMap[54] = 6;
-			codeMap[55] = 7;
-			codeMap[56] = 8;
-			codeMap[57] = 9;
+			codeMap[52] = 7;
+			codeMap[53] = 8;
+			codeMap[54] = 9;
+			codeMap[55] = 13;
+			codeMap[56] = 14;
+			codeMap[57] = 15;
 			
 			document.stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
 				if (e.keyCode in codeMap) {

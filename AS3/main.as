@@ -66,7 +66,7 @@
 			mainMenu = new menu(this);
 			addChild(mainMenu);
 			
-			gameGrid = new Map(8, 8, 1);
+			gameGrid = new Map(8, 8, 3, 2);
 			gameGrid.x = 400;
 			gameGrid.y = 50;
 			

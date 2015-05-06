@@ -6,11 +6,12 @@
 	
 	public class Map extends Grid {
 		public static const MAPPATH:String = "../Maps/";
+		public static const LAYOUT_FOLDER:String = "layouts/";
+		public static const LAYOUT_FILEEXTENSION:String = ".txt";
 		public static const MAPFOLDER_PREFIX:String = "map";
 		public static const BACKGROUND:String = "basemap.png";
 		public static const BASETILE:String = "base";
 		public static const TILE_FILEEXTENSION:String = ".png";
-		public static const LAYOUT_FILEEXTENSION:String = ".txt";
 		
 		private var path;
 		private var file:URLLoader;
@@ -21,7 +22,7 @@
 			
 			this.file = new URLLoader();
 			file.addEventListener(Event.COMPLETE, loadMap);
-			file.load(new URLRequest(path + layout + LAYOUT_FILEEXTENSION));
+			file.load(new URLRequest(MAPPATH + LAYOUT_FOLDER + layout + LAYOUT_FILEEXTENSION));
 		}
 		
 		private function loadMap(e:Event = null) {

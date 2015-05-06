@@ -1,1 +1,45 @@
-Avoid tall grass and get to tomato
+Possible goals:
+
+1) Avoid tall grass and get to the berries
+
+O - regular tiles
+X - obstacles
+B - berries
+
+O O O O X X X X
+O O O O O X X X
+O O O O O O O X
+X O O O O O O O
+X O X X X O O O
+X O X X O O O O
+X O O O O O O O
+X X X X X O O B
+
+2) Get all the red and blue berries.  Avoid the yellow berries
+
+R - red berries
+B - blue berries
+Y - yellow berries
+
+O O O O X X Y Y
+O O O O O O O Y
+O O O X O O O X
+O O X X R O O X
+O O X R B O O O
+X O X O O O O O
+B O O O O O O R
+X X X O O X X X
+
+3) Water the tree.  Bring the water to the big green tree.
+
+W - water
+T- tree
+
+O O O O O X X X
+O O O O O O O X
+O O O O O O T X
+X X X X O O O O
+X O O X O O O O
+X O O X X O O O
+X W O O O O O O
+X X O O O O O O

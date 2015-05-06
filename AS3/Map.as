@@ -59,7 +59,7 @@
 			// show berry image in the mock list
 			image = new Loader();
 			image.load(new URLRequest(path + "1.png"));
-			image.x = 1100;
+			image.x = 1075;
 			image.y = 55;
 			addChild(image);
 		}

@@ -14,8 +14,8 @@
 		public var rows;
 		public var cols;
 		
-		private var goalX:uint;
-		private var goalY:uint;
+		protected var goalX:uint;
+		protected var goalY:uint;
 		
 		protected var block:Vector.<Vector.<Boolean>>;
 		

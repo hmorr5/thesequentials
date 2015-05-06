@@ -1,54 +1,66 @@
 ﻿package {
 	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
 	public class Map extends Grid {
 		public static const MAPPATH:String = "../Maps/";
 		public static const MAPFOLDER_PREFIX:String = "map";
-		public static const FILE:String = "examplemap.jpg";
+		public static const BACKGROUND:String = "basemap.png";
+		public static const BASETILE:String = "base";
+		public static const TILE_FILEEXTENSION:String = ".png";
+		public static const LAYOUT_FILEEXTENSION:String = ".txt";
 		
 		private var path;
-		private var loader;
+		private var file:URLLoader;
 
-		public function Map(rows, cols, map:uint) {
-			super(rows, cols, 7, 7);
+		public function Map(rows, cols, map:uint, layout:uint = 1) {
+			super(rows, cols);
 			this.path = MAPPATH + MAPFOLDER_PREFIX + map + "/";
 			
-			this.loader = new Loader();
-			loader.load(new URLRequest(path + FILE));
-			addChild(loader);
+			this.file = new URLLoader();
+			file.addEventListener(Event.COMPLETE, loadMap);
+			file.load(new URLRequest(path + layout + LAYOUT_FILEEXTENSION));
+		}
+		
+		private function loadMap(e:Event = null) {
+			var structure:Array = file.data.split("\n");
+			var image:Loader;
 			
-			this.loader = new Loader();
-			loader.load(new URLRequest(path + "1.png"));
-			loader.x = 1100;
-			loader.y = 55;
-			addChild(loader);
+			image = new Loader();
+			image.load(new URLRequest(path + BACKGROUND));
+			addChild(image);
 			
-			block[0][4] = true;
-			block[0][5] = true;
-			block[0][6] = true;
-			block[0][7] = true;
-			block[1][5] = true;
-			block[1][6] = true;
-			block[1][7] = true;
-			block[2][7] = true;
-			block[3][0] = true;
-			block[4][0] = true;
-			block[4][2] = true;
-			block[4][3] = true;
-			block[4][4] = true;
-			block[5][0] = true;
-			block[5][1] = true;
-			block[5][2] = true;
-			block[5][3] = true;
-			block[6][0] = true;
-			block[6][1] = true;
-			block[6][2] = true;
-			block[7][0] = true;
-			block[7][1] = true;
-			block[7][2] = true;
-			block[7][3] = true;
-			block[7][4] = true;
+			for (var y:Number = 0; y < rows; y++) {
+				var row:Array = structure[y].split("");
+				row.splice(-1, 1);
+				
+				for (var x in row) {
+					image = new Loader();
+					if (row[x] == " ") {
+						image.load(new URLRequest(path + BASETILE + TILE_FILEEXTENSION));
+					} else {
+						image.load(new URLRequest(path + row[x] + TILE_FILEEXTENSION));
+						if (row[x].match(/[a-z]/) != null) {
+							block[y][x] = true;
+						} else if (row[x].match(/[1-9]/) != null) {
+							goalX = x;
+							goalY = y;
+						}
+					}
+					image.x = x * Grid.DX;
+					image.y = y * Grid.DY;
+					addChild(image);
+				}
+			}
+			
+			// show berry image in the mock list
+			image = new Loader();
+			image.load(new URLRequest(path + "1.png"));
+			image.x = 1100;
+			image.y = 55;
+			addChild(image);
 		}
 	}
 }

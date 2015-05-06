@@ -5,7 +5,7 @@
 	public class Map extends Grid {
 		public static const MAPPATH:String = "../Maps/";
 		public static const MAPFOLDER_PREFIX:String = "map";
-		public static const FILE:String = "suggestedmapstructure.jpg";
+		public static const FILE:String = "examplemap.jpg";
 		
 		private var path;
 		private var loader;
@@ -19,7 +19,7 @@
 			addChild(loader);
 			
 			this.loader = new Loader();
-			loader.load(new URLRequest(path + "112wildtomato.png"));
+			loader.load(new URLRequest(path + "1.png"));
 			loader.x = 1100;
 			loader.y = 55;
 			addChild(loader);

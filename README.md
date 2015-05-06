@@ -13,7 +13,7 @@ Please remember to document any necessary instructions for programmers / users i
 To run the application, launch reacTIVision and the udpbridge (either from command line or by double clicking the renamed .exe file).
 
 
-Cube Numbering (After Teach Testing )
+Current Cube Fiducial Assignment
 [Direction] : [Fiducial id] 
 The fiducial for the direction will be on the opposite side of the cube since the cube will be placed onto the glass.
 

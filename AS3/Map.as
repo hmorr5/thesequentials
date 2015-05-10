@@ -9,7 +9,7 @@
 		public static const LAYOUT_FOLDER:String = "layouts/";
 		public static const LAYOUT_FILEEXTENSION:String = ".txt";
 		public static const MAPFOLDER_PREFIX:String = "map";
-		public static const BACKGROUND:String = "basemap.png";
+		public static const BACKGROUND:String = "background.png";
 		public static const BASETILE:String = "base";
 		public static const TILE_FILEEXTENSION:String = ".png";
 		
@@ -35,13 +35,18 @@
 			
 			for (var y:Number = 0; y < rows; y++) {
 				var row:Array = structure[y].split("");
+				trace(row[row.length-1]);
 				row.splice(-1, 1);
 				
 				for (var x in row) {
 					image = new Loader();
-					if (row[x] == " ") {
-						image.load(new URLRequest(path + BASETILE + TILE_FILEEXTENSION));
-					} else {
+					image.load(new URLRequest(path + BASETILE + TILE_FILEEXTENSION));
+					image.x = x * Grid.DX;
+					image.y = y * Grid.DY;
+					addChild(image);
+					
+					if (row[x] != " ") {
+						image = new Loader();
 						image.load(new URLRequest(path + row[x] + TILE_FILEEXTENSION));
 						if (row[x].match(/[a-z]/) != null) {
 							block[y][x] = true;
@@ -49,14 +54,14 @@
 							goalX = x;
 							goalY = y;
 						}
+						image.x = x * Grid.DX;
+						image.y = y * Grid.DY;
+						addChild(image);
 					}
-					image.x = x * Grid.DX;
-					image.y = y * Grid.DY;
-					addChild(image);
 				}
 			}
 			
-			// show berry image in the mock list
+			// show goal image in the mock list
 			image = new Loader();
 			image.load(new URLRequest(path + "1.png"));
 			image.x = 1075;

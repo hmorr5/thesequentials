@@ -107,7 +107,7 @@
 		private function setupIntermediateMode() {
 			setupAdvancedMode();
 			
-			var ghostDelay:Timer = new Timer(15000);
+			var ghostDelay:Timer = new Timer(8000);
 			ghostDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
 				if (moves.length > 0 && !block_newInput) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
@@ -125,9 +125,7 @@
 						var count:int = ghostTick.currentCount - 1;
 						if (count < tmpMoves.length) {
 							ghost.move(tmpMoves[count]);
-						}/* else if (tmpMoves.length < count && count <= 2 * tmpMoves.length){
-							ghost.reverse(tmpMoves[2 * tmpMoves.length - count]);
-						}*/ // TODO: fix ghost in case of bumps
+						}
 					});
 					ghostTick.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
 						game.removeChild(ghost);

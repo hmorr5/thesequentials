@@ -16,8 +16,8 @@
 		private var path;
 		private var file:URLLoader;
 
-		public function Map(rows, cols, map:uint, layout:uint = 1) {
-			super(rows, cols);
+		public function Map(document:main, rows, cols, map:uint, layout:uint = 1) {
+			super(document, rows, cols, false);
 			this.path = MAPPATH + MAPFOLDER_PREFIX + map + "/";
 			
 			this.file = new URLLoader();
@@ -60,6 +60,8 @@
 					}
 				}
 			}
+			
+			addChild(character);
 			
 			// show goal image in the mock list
 			image = new Loader();

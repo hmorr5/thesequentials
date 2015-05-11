@@ -27,8 +27,7 @@
 		
 		// basic display objects
 		var mainMenu:menu;
-		var gameGrid:Grid;
-		var character:Bug;
+		var game:Grid;
 		var checkList;
 		
 		// intermediate/advanced mode
@@ -66,12 +65,9 @@
 			mainMenu = new menu(this);
 			addChild(mainMenu);
 			
-			gameGrid = new Map(8, 8, 3, 2);
-			gameGrid.x = 400;
-			gameGrid.y = 50;
-			
-			character = new Bug(this, gameGrid);
-			character.gotoAndStop(1);
+			game = new Map(this, 8, 8, 3, 2);
+			game.x = 400;
+			game.y = 50;
 			
 			checkList = new mockList;
 			checkList.x = 1350;
@@ -91,8 +87,7 @@
 		}
 		
 		private function setupEasyMode() {
-			addChild(gameGrid);
-			addChild(character);
+			addChild(game);
 			addChild(checkList);
 			addChild(nextCubeArea);
 			addChild(nextCube);
@@ -117,25 +112,25 @@
 				if (moves.length > 0 && !block_newInput) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
 					
-					var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0.5);
+					var ghost:Bug = new Bug(document, game, game.getPosX(), game.getPosY(), game.getDirection(), 0.5);
 					ghost.gotoAndStop(1);
-					addChild(ghost);
+					game.addChild(ghost);
 					
 					var ghostTick = new Timer(500, 2 * tmpMoves.length + 2);
 					ghostTick.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 						if (block_newInput) {
 							ghostTick.stop();
-							removeChild(ghost);
+							game.removeChild(ghost);
 						}
 						var count:int = ghostTick.currentCount - 1;
 						if (count < tmpMoves.length) {
 							ghost.move(tmpMoves[count]);
 						}/* else if (tmpMoves.length < count && count <= 2 * tmpMoves.length){
 							ghost.reverse(tmpMoves[2 * tmpMoves.length - count]);
-						}*/
+						}*/ // TODO: fix ghost in case of bumps
 					});
 					ghostTick.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
-						removeChild(ghost);
+						game.removeChild(ghost);
 					});
 					ghostTick.start();
 				}
@@ -181,7 +176,7 @@
 			
 			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 				if (moves.length > 0) {
-					character.move(moves[0]);
+					game.move(moves[0]);
 					moves.shift();
 				}
 			});
@@ -232,7 +227,7 @@
 		public function newInput(input:uint):void {
 			if (block_newInput) return;
 			if (mode == EASY) {
-				character.move(input);
+				game.move(input);
 				nextInput();
 			} else { // intermediate/advanced mode
 				if (input == Bug.UNDO) {
@@ -320,7 +315,7 @@
 		private function updateGoButton() {
 			if (moves.length < 4) {
 				enableGoButton = false;
-				var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0);
+				var ghost:Bug = new Bug(document, game, game.getPosX(), game.getPosY(), game.getDirection(), 0);
 				ghost.gotoAndStop(1);
 				for (var i:Number = 0; i < moves.length; i++) {
 					ghost.move(moves[i]);

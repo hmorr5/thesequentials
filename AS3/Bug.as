@@ -170,23 +170,23 @@
 		public function updatePosition(animate:Boolean = true):void {
 			if (animate) {
 				TweenMax.to(this, 1, {
-					x: grid.x + (posX + 0.5) * Grid.DX,
-					y: grid.y + (posY + 0.5) * Grid.DY
+					x: (posX + 0.5) * Grid.DX,
+					y: (posY + 0.5) * Grid.DY
 				});
 			} else {
-				this.x = grid.x + (posX + 0.5) * Grid.DX;
-				this.y = grid.y + (posY + 0.5) * Grid.DY;
+				this.x = (posX + 0.5) * Grid.DX;
+				this.y = (posY + 0.5) * Grid.DY;
 			}
 		}
 		
 		private function noAccess() {
 			TweenMax.to(this, 0.2, {
-				x: grid.x + (posX + 0.5 + 0.5 * ((direction + 1) % 2)) * Grid.DX,
-				y: grid.y + (posY + 0.5 + 0.5 * (direction % 2)) * Grid.DY
+				x: (posX + 0.5 + 0.5 * ((direction + 1) % 2)) * Grid.DX,
+				y: (posY + 0.5 + 0.5 * (direction % 2)) * Grid.DY
 			});
 			TweenMax.to(this, 0.5, {
-				x: grid.x + (posX + 0.5) * Grid.DX,
-				y: grid.y + (posY + 0.5) * Grid.DY
+				x: (posX + 0.5) * Grid.DX,
+				y: (posY + 0.5) * Grid.DY
 			});
 		}
 	}

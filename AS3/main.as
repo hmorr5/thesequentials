@@ -6,13 +6,22 @@
 	import flash.utils.*;
 	import flash.geom.ColorTransform;
 	
+	import flash.media.*;
+	
 	public class main extends MovieClip{
+		
 		
 		static const EASY:uint = 0;
 		static const INTERMEDIATE:uint = 1;
 		static const ADVANCED:uint = 2;
 		
 		static const cubeColor:Array = [0xff0000, 0xffdab9, 0x007f00];
+		
+		public var MusicBeginBg = new BegBg(); //Creates beginner lvl bg music
+		public var MusicBeginBgCh = new SoundChannel(); //Creates beginner lvl bg sound channel
+		public var MusicMenuBg = new loop(); //Creates Menu bg music
+		public var MusicMenuBgCh = new SoundChannel(); //Creates Menu bg sound channel
+		public var OnLvlStart = new weird(); //Creates sound for start of lvl
 		
 		private var document:main;
 		
@@ -27,7 +36,8 @@
 		
 		// basic display objects
 		var mainMenu:menu;
-		var game:Grid;
+		var gameGrid:Grid;
+		var character:Bug;
 		var checkList;
 		
 		// intermediate/advanced mode
@@ -53,6 +63,8 @@
 			codeMap[40] = Bug.UNDO;
 			
 			this.document = this;
+		
+			MusicMenuBgCh = MusicMenuBg.play(0, 20); //Begins playing the Menu Bg music
 			
 			//*
 			input = new FiducialInput(this);
@@ -65,9 +77,12 @@
 			mainMenu = new menu(this);
 			addChild(mainMenu);
 			
-			game = new Map(this, 8, 8, 3, 2);
-			game.x = 400;
-			game.y = 50;
+			gameGrid = new Map(8, 8, 3, 2);
+			gameGrid.x = 400;
+			gameGrid.y = 50;
+			
+			character = new Bug(this, gameGrid);
+			character.gotoAndStop(1);
 			
 			checkList = new mockList;
 			checkList.x = 1350;
@@ -87,7 +102,8 @@
 		}
 		
 		private function setupEasyMode() {
-			addChild(game);
+			addChild(gameGrid);
+			addChild(character);
 			addChild(checkList);
 			addChild(nextCubeArea);
 			addChild(nextCube);
@@ -107,28 +123,30 @@
 		private function setupIntermediateMode() {
 			setupAdvancedMode();
 			
-			var ghostDelay:Timer = new Timer(8000);
+			var ghostDelay:Timer = new Timer(15000);
 			ghostDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent = null):void {
 				if (moves.length > 0 && !block_newInput) {
 					var tmpMoves:Array = moves.slice(); // shallow copy, works for non-object arrays
 					
-					var ghost:Bug = new Bug(document, game, game.getPosX(), game.getPosY(), game.getDirection(), 0.5);
+					var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0.5);
 					ghost.gotoAndStop(1);
-					game.addChild(ghost);
+					addChild(ghost);
 					
 					var ghostTick = new Timer(500, 2 * tmpMoves.length + 2);
 					ghostTick.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 						if (block_newInput) {
 							ghostTick.stop();
-							game.removeChild(ghost);
+							removeChild(ghost);
 						}
 						var count:int = ghostTick.currentCount - 1;
 						if (count < tmpMoves.length) {
 							ghost.move(tmpMoves[count]);
-						}
+						}/* else if (tmpMoves.length < count && count <= 2 * tmpMoves.length){
+							ghost.reverse(tmpMoves[2 * tmpMoves.length - count]);
+						}*/
 					});
 					ghostTick.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void {
-						game.removeChild(ghost);
+						removeChild(ghost);
 					});
 					ghostTick.start();
 				}
@@ -174,7 +192,7 @@
 			
 			movementDelay.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
 				if (moves.length > 0) {
-					game.move(moves[0]);
+					character.move(moves[0]);
 					moves.shift();
 				}
 			});
@@ -200,6 +218,11 @@
 		 * Start the game in easy mode: bug moves in real time.
 		 */
 		public function startEasyMode() {
+			
+			OnLvlStart.play(); //Starts playing the sound on lvl start
+			MusicMenuBgCh.stop(); //Stops the menu Music
+			MusicBeginBgCh.stop(); //Stops the Beginner lvl music (if the lvl goes straight back to main menu)
+			MusicBeginBgCh = MusicBeginBg.play(0, 20); //Start Beginner lvl music
 			setupEasyMode();
 		}
 		
@@ -207,6 +230,11 @@
 		 * Start the game in intermediate mode: bug moves every 4 inputs and has a ghost.
 		 */
 		public function startIntermediateMode() {
+			OnLvlStart.play(); //Same as beginner
+			MusicMenuBgCh.stop(); //Same as beginner
+			MusicBeginBgCh.stop(); //Same as beginner
+			MusicBeginBgCh = MusicBeginBg.play(0, 20); //Same as Beginner
+			MusicBeginBgCh = MusicBeginBg.play(0, 20); //Same as Beginner
 			setupIntermediateMode();
 		}
 		
@@ -214,6 +242,10 @@
 		 * Start the game in advanced mode: bug moves every 4 inputs.
 		 */
 		public function startAdvancedMode() {
+			OnLvlStart.play();
+			MusicMenuBgCh.stop();
+			MusicBeginBgCh.stop();
+			MusicBeginBgCh = MusicBeginBg.play(0, 20);
 			setupAdvancedMode();
 		}
 		
@@ -225,7 +257,8 @@
 		public function newInput(input:uint):void {
 			if (block_newInput) return;
 			if (mode == EASY) {
-				game.move(input);
+				character.move(input);
+				
 				nextInput();
 			} else { // intermediate/advanced mode
 				if (input == Bug.UNDO) {
@@ -245,6 +278,7 @@
 					switch (input) {
 						case Bug.FORWARD:
 							arrow = new goForwardArrow();
+						
 							break;
 						case Bug.TURNLEFT:
 							arrow = new turnLeftArrow();
@@ -303,6 +337,8 @@
 				movementDelay.start();
 				blockInput();
 				
+				
+				
 				input.last = -1;
 			}
 		}
@@ -313,7 +349,7 @@
 		private function updateGoButton() {
 			if (moves.length < 4) {
 				enableGoButton = false;
-				var ghost:Bug = new Bug(document, game, game.getPosX(), game.getPosY(), game.getDirection(), 0);
+				var ghost:Bug = new Bug(document, gameGrid, character.posX, character.posY, character.direction, 0);
 				ghost.gotoAndStop(1);
 				for (var i:Number = 0; i < moves.length; i++) {
 					ghost.move(moves[i]);
@@ -324,6 +360,7 @@
 					removeChild(goButton);
 				}
 				addChild(goButtonGreen);
+				
 			} else {
 				if (goButtonGreen.stage) {
 					removeChild(goButtonGreen);
